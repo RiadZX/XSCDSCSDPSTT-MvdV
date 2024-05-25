@@ -24,7 +24,7 @@ public final class ScanFileService {
         GroupInfo groupInfo = dependencyTree.getGroups().get(0);
         String prompt = Convertinator.toPrompt(groupInfo);
         ChatGpt chatGpt = new ChatGpt();
-        String response = chatGpt.getResponse(prompt);
+        String response = chatGpt.askPrompt(prompt);
         System.out.println(response);
     }
 }
