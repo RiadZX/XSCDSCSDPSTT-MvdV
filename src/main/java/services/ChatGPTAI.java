@@ -26,7 +26,7 @@ public class ChatGPTAI {
             connection.setRequestProperty("Authorization", "Bearer " + apiKey);
             connection.setRequestProperty("Content-Type", "application/json");
             String systemPrompt = "You are a time complexity analysis tool. You are asked to analyze the time complexity of the following code. Respond with a time complexity, no extra content, only the time complexity." +
-                    "Example Answer: O(n^2)";
+                    "Example Answer: O(n^2), O(n log n), O(1), etc. Nothing else.";
             // The request body
             String body = generatePayload(systemPrompt, prompt, model);
 

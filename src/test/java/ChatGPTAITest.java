@@ -9,7 +9,7 @@ public class ChatGPTAITest {
                 def quicksort(array, low=0, high=None):
                     if high is None:
                         high = len(array) - 1
-                                
+                         
                     if low < high:
                         pivot_index = partition(array, low, high)
                         quicksort(array, low, pivot_index-1)
