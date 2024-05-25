@@ -21,10 +21,30 @@ public class MyGutterIconProvider implements LineMarkerProvider {
     @Nullable
     @Override
     public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement el) {
-        if (isValidElement(el)) {
-            if (MethodInfo.methodInfoMap.containsKey(el)) {
+
+        PsiElement refEl = getReferenceElement(el);
+        if (refEl!=null){
+            //handling a reference element
+            if (MethodInfo.methodInfoMap.get(refEl) == null) return null;
+            Complexity timeComplexity = MethodInfo.methodInfoMap.get(refEl).getTimeComplexity();
+            if (timeComplexity == null) return null;
+            return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+        } else {
+            //handling something else
+            if (isValidElement(el)) {
+                if (MethodInfo.methodInfoMap.get(el) == null) return null;
                 Complexity timeComplexity = MethodInfo.methodInfoMap.get(el).getTimeComplexity();
+                if (timeComplexity == null) return null;
                 return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+            }
+        }
+        return null;
+    }
+
+    private PsiElement getReferenceElement(PsiElement el) {
+        if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
+            if (el.getReference() != null) {
+                return el.getReference().resolve();
             }
         }
         return null;
@@ -37,6 +57,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
 
     private boolean isValidElement(PsiElement el) {
         return "METHOD".equals(el.getNode().getElementType().toString());
+
     }
 
     private static class MyLineMarkerInfo extends LineMarkerInfo<PsiElement> {
