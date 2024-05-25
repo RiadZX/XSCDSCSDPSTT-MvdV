@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -11,6 +12,7 @@ import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.github.riadzx.xscdscsdpsttmvdv.services.MyProjectService;
 import services.ScanFileService;
 import utils.DependencyTree;
+import utils.PsiHelper;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -52,10 +54,8 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // get the currently opened file
-                    var res = service.scanFile(service.getCurrentFile());
-                    System.out.println(res);
-                    DependencyTree.buildFromPSIElements(res);
+                    PsiFile psiFile = PsiHelper.getCurrentFile();
+                    service.scanFile(psiFile);
                 }
             });
             panel.add(button);
