@@ -22,7 +22,6 @@ public class ChatgptResponse {
         public static class Message {
             private String role;
             private String content;
-
         }
     }
 
