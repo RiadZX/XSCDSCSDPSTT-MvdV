@@ -19,11 +19,11 @@ public class TimeComplexityUpdater {
     private static String readFile() {
         try {
             Scanner sc = new Scanner(new FileReader("./systemPrompt.txt"));
-            String fileContents = "";
+            StringBuilder fileContents = new StringBuilder();
             while (sc.hasNextLine()) {
-                fileContents += sc.nextLine();
+                fileContents.append(sc.nextLine());
             }
-            return fileContents;
+            return fileContents.toString();
         }
         catch(FileNotFoundException e){
             return "L bozo didn't find anything";
@@ -35,7 +35,6 @@ public class TimeComplexityUpdater {
         String response = chatgpt.getResponse(systemPrompt, prompt);
         parseResponse(groupInfo, response);
     }
-
 
     private static String makePrompt(GroupInfo group) {
         String prompt = "Give the time complexity(ies) of the following method(s):\n";
@@ -72,17 +71,21 @@ public class TimeComplexityUpdater {
     }
 
     private static void parseResponse(GroupInfo groupInfo, String response) {
-        ChatgptResponse chatgptResponse = new Gson().fromJson(response, ChatgptResponse.class);
-        String content = chatgptResponse.choices.get(0).message.content;
-        String[] items = content.split("\\n");
-        for (String item : items) {
-            String[] parts = content.split(":");
-            String methodSignature = parts[0];
-            String timeComplexity = parts[1];
+        try {
+            ChatgptResponse chatgptResponse = new Gson().fromJson(response, ChatgptResponse.class);
+            String content = chatgptResponse.choices.get(0).message.content;
+            String[] items = content.split("\\n");
+            for (String item : items) {
+                String[] parts = content.split(":");
+                String methodSignature = parts[0];
+                String timeComplexity = parts[1];
 
-            Complexity complexity = Complexity.fromString(timeComplexity);
-            MethodInfo methodInfo = groupInfo.getMethodBySignature(methodSignature);
-            methodInfo.setTimeComplexity(complexity);
+                Complexity complexity = Complexity.fromString(timeComplexity);
+                MethodInfo methodInfo = groupInfo.getMethodBySignature(methodSignature);
+                methodInfo.setTimeComplexity(complexity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error parsing response from ChatGPT: " + e.getMessage());
         }
     }
 }
