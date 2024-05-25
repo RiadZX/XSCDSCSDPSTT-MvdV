@@ -57,15 +57,15 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
                     var res = service.scanFile(service.getCurrentFile());
-                    ///REMOVE THIS
-                    var groupInfoTemp = new GroupInfo();
-                    var groupInfoTemp2 = new GroupInfo();
-                    groupInfoTemp.setMethods(List.of(res.get(1)));
-                    groupInfoTemp.setChildren(List.of(groupInfoTemp2));
-                    groupInfoTemp2.setMethods(List.of(res.get(0)));
-                    res.get(0).setTimeComplexityLong("O(heel veel)");
-                    Convertinator.toPrompt(groupInfoTemp);
-                    ///ABOVE HERE
+                    ///REMOVE THIS------------------------------------------------------------------
+//                    var groupInfoTemp = new GroupInfo();
+//                    var groupInfoTemp2 = new GroupInfo();
+//                    groupInfoTemp.setMethods(List.of(res.get(1)));
+//                    groupInfoTemp.setChildren(List.of(groupInfoTemp2));
+//                    groupInfoTemp2.setMethods(List.of(res.get(0)));
+//                    res.get(0).setTimeComplexityLong("O(heel veel)");
+//                    Convertinator.toPrompt(groupInfoTemp);
+                    ///ABOVE HERE ------------------------------------------------------------------
                     System.out.println(res);
                     DependencyTree.buildFromPSIElements(res);
                 }
