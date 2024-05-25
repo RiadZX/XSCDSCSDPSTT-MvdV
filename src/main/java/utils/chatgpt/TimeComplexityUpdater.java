@@ -5,20 +5,16 @@ import utils.Complexity;
 import utils.GroupInfo;
 import utils.MethodInfo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class TimeComplexityUpdater {
     private static final String systemPrompt = """
             You are a time complexity analysis tool.
             You must analyze the time complexity of the provided methods.
-            Respond with the signature of the method with its time complexity. Do not give any extra content. Specify this exactly in the following format and do not give any other content:
-            methodSignature(int[] arr): O(n^2)
+            Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
+            methodSignature(int[] arr): O(n^2), O(arr^2), orange
             
             Example input:
             public static void selectionSort(int[] arr) {
@@ -55,8 +51,8 @@ public class TimeComplexityUpdater {
             }
                         
             Output:
-            selectionSort(int[] arr): O(n^2)
-            traversePreOrderWithoutRecursion: O(1)
+            selectionSort(int[] arr): O(n^2), O(arr^2), orange
+            traversePreOrderWithoutRecursion: O(1), O(1), green
     """;
     private static final Chatgpt chatgpt  = new Chatgpt();;
 
@@ -88,15 +84,15 @@ public class TimeComplexityUpdater {
 
     private static Map<MethodInfo, Complexity> associateComplexityToMethods(GroupInfo group){
         Map<MethodInfo, Complexity> res = new HashMap<>();
-        List<GroupInfo> children = group.getChildren();
-        for(GroupInfo child : children){
-            List<MethodInfo> methodInfo = child.getMethods();
-            for(MethodInfo method : methodInfo){
-                MethodInfo name = method;
-                Complexity compl = Complexity.fromString(method.getTimeComplexity().getValue());
-                res.put(name, compl);
-            }
-        }
+//        List<GroupInfo> children = group.getChildren();
+//        for(GroupInfo child : children){
+//            List<MethodInfo> methodInfo = child.getMethods();
+//            for(MethodInfo method : methodInfo){
+//                MethodInfo name = method;
+//                Complexity compl = Complexity.fromString(method.getTimeComplexity().getLongComplexity());
+//                res.put(name, compl);
+//            }
+//        }
         return res;
     }
 
@@ -108,9 +104,12 @@ public class TimeComplexityUpdater {
             for (String item : items) {
                 String[] parts = content.split(":");
                 String methodSignature = parts[0];
-                String timeComplexity = parts[1];
+                String dataParts = parts[1];
+                String shortTimeComplexity = dataParts.split(",")[0];
+                String longTimeComplexity = dataParts.split(",")[1];
+                String colorTimeComplexity = dataParts.split(",")[2];
 
-                Complexity complexity = Complexity.fromString(timeComplexity);
+                Complexity complexity = Complexity.fromString(shortTimeComplexity, longTimeComplexity, colorTimeComplexity);
                 MethodInfo methodInfo = groupInfo.getMethodBySignature(methodSignature);
                 methodInfo.setTimeComplexity(complexity);
             }
