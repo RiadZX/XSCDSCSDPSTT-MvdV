@@ -14,16 +14,26 @@ public class MyGutterIconProvider implements LineMarkerProvider {
 
     @Nullable
     @Override
-    public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
-        System.out.println("I have been called");
-        return new LineMarkerInfo<>(
-                element,
-                element.getTextRange(),
-                AllIcons.Gutter.ImplementingMethod,
-                Pass.UPDATE_ALL,
-                (Function<PsiElement, String>) PsiElement::getText,
-                null,
-                GutterIconRenderer.Alignment.RIGHT
-        );
+    public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement el) {
+        if (isValidElement(el)) {
+            String complexity = getComplexity(el);
+            return new LineMarkerInfo<>(
+                    el,
+                    el.getTextRange(),
+                    AllIcons.Gutter.ImplementingMethod,
+                    Pass.UPDATE_ALL,
+                    this::getComplexity,
+                    null,
+                    GutterIconRenderer.Alignment.RIGHT
+            );
+        }
+        return null;
+    }
+    private String getComplexity(PsiElement el) {
+        return el.getText();
+//        return "O(n^2)";
+    }
+    private boolean isValidElement(PsiElement el) {
+        return "METHOD".equals(el.getNode().getElementType().toString());
     }
 }
