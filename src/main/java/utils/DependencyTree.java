@@ -61,6 +61,7 @@ public class DependencyTree {
 
     public void updateComplexities() {
         for (GroupInfo groupInfo : groups) {
+            System.out.println("Updating complexities for group: " + groupInfo.hashCode());
             groupInfo.updateComplexities();
         }
     }

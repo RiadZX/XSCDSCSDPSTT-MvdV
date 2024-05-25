@@ -5,6 +5,7 @@ import utils.Complexity;
 import utils.GroupInfo;
 import utils.MethodInfo;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -13,22 +14,51 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TimeComplexityUpdater {
-    private static final String systemPrompt = readFile();
-    private static final Chatgpt chatgpt  = new Chatgpt();;
-
-    private static String readFile() {
-        try {
-            Scanner sc = new Scanner(new FileReader("./systemPrompt.txt"));
-            StringBuilder fileContents = new StringBuilder();
-            while (sc.hasNextLine()) {
-                fileContents.append(sc.nextLine());
+    private static final String systemPrompt = """
+            You are a time complexity analysis tool.
+            You must analyze the time complexity of the provided methods.
+            Respond with the signature of the method with its time complexity. Do not give any extra content. Specify this exactly in the following format and do not give any other content:
+            methodSignature(int[] arr): O(n^2)
+            
+            Example input:
+            public static void selectionSort(int[] arr) {
+                int n = getArrLength(arr);
+                for (int i = 0; i < n - 1; i++) {
+                    int minIndex = i;
+                    for (int j = i + 1; j < n; j++) {
+                        if (arr[j] < arr[minIndex]) {
+                            minIndex = j;
+                        }
+                    }
+                    // Swap the found minimum element with the first
+                    // element of the unsorted part
+                    int temp = arr[minIndex];
+                    arr[minIndex] = arr[i];
+                    arr[i] = temp;
+                }
             }
-            return fileContents.toString();
-        }
-        catch(FileNotFoundException e){
-            return "L bozo didn't find anything";
-        }
-    }
+            public void traversePreOrderWithoutRecursion() {
+                Stack<Node> stack = new Stack<Node>();
+                Node current = root;
+                stack.push(root);
+                while(!stack.isEmpty()) {
+                    current = stack.pop();
+                    visit(current.value);
+                        
+                    if(current.right != null) {
+                        stack.push(current.right);
+                    }
+                    if(current.left != null) {
+                        stack.push(current.left);
+                    }
+                }
+            }
+                        
+            Output:
+            selectionSort(int[] arr): O(n^2)
+            traversePreOrderWithoutRecursion: O(1)
+    """;
+    private static final Chatgpt chatgpt  = new Chatgpt();;
 
     public static void updateTimeComplexities(GroupInfo groupInfo) {
         String prompt = makePrompt(groupInfo);
@@ -85,7 +115,7 @@ public class TimeComplexityUpdater {
                 methodInfo.setTimeComplexity(complexity);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error parsing response from ChatGPT: " + e.getMessage());
+            System.err.println("Error parsing response from ChatGPT: " + e.getMessage());
         }
     }
 }
