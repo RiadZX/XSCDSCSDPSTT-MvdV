@@ -50,4 +50,12 @@ public class DependencyTree {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
+    public MethodInfo getMethodInfo(PsiElement child) {
+        for (MethodInfo methodInfo : methods) {
+            if (methodInfo.getPsiElement().equals(child)) {
+                return methodInfo;
+            }
+        }
+        throw new RuntimeException("Method not found");
+    }
 }

@@ -13,6 +13,7 @@ import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,15 +36,13 @@ public class PsiHelper {
 
     public static List<PsiElement> findMethodReferences(PsiElement element) {
         List<PsiElement> res = new ArrayList<>();
-        for (PsiElement sub : element.getChildren()) {
-            findMethodReferences(sub, res);
-        }
+        findMethodReferences(element, res);
         return res;
     }
 
     private static void findMethodReferences(PsiElement el, List<PsiElement> methods) {
-        if ("METHOD_REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
-            methods.add(el);
+        if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
+            methods.add(el.getReference().resolve());
         }
         for (PsiElement sub : el.getChildren()) {
             findMethodReferences(sub, methods);
