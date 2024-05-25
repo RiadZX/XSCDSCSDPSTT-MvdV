@@ -14,13 +14,15 @@ public class GroupInfo {
     private List<MethodInfo> methods;
     private List<GroupInfo> parents;
     private List<GroupInfo> children;
-
+    private static long groupIDCounter;
+    private long groupID;
     private Set<String> variables;
 
     public GroupInfo() {
         this.methods = new ArrayList<>();
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
+        this.groupID = groupIDCounter++;
     }
 
     public List<MethodInfo> getMethods() {
@@ -76,5 +78,9 @@ public class GroupInfo {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public long getGroupID(){
+        return this.groupID;
     }
 }

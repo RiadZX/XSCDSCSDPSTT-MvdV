@@ -10,12 +10,15 @@ import com.intellij.ui.content.ContentFactory;
 import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.github.riadzx.xscdscsdpsttmvdv.services.MyProjectService;
 import services.ScanFileService;
+import utils.Convertinator;
 import utils.DependencyTree;
+import utils.GroupInfo;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ComplexityWindowFactory implements ToolWindowFactory {
 
@@ -54,6 +57,15 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
                     var res = service.scanFile(service.getCurrentFile());
+                    ///REMOVE THIS
+                    var groupInfoTemp = new GroupInfo();
+                    var groupInfoTemp2 = new GroupInfo();
+                    groupInfoTemp.setMethods(List.of(res.get(1)));
+                    groupInfoTemp.setChildren(List.of(groupInfoTemp2));
+                    groupInfoTemp2.setMethods(List.of(res.get(0)));
+                    res.get(0).setTimeComplexityLong("O(heel veel)");
+                    Convertinator.toPrompt(groupInfoTemp);
+                    ///ABOVE HERE
                     System.out.println(res);
                     DependencyTree.buildFromPSIElements(res);
                 }
