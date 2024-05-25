@@ -72,11 +72,12 @@ public class GroupInfo {
 
     public MethodInfo getMethodBySignature(String signature) {
         for(MethodInfo method : methods){
-            if(method.getMethod().getText().startsWith(signature)){
+            String text = method.getMethod().getText();
+            if(text.contains(signature)){
                 return method;
             }
         }
-        return null;
+        throw new RuntimeException("Method not found with signature '"+signature+"'");
     }
 
     private static MethodInfo findMethodInfoAssociatedToMethodSignature(GroupInfo group, String methodSignature){

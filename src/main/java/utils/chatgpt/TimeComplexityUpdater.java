@@ -11,8 +11,10 @@ import java.util.Map;
 
 public class TimeComplexityUpdater {
     private static final String systemPrompt =
-            "You are a time complexity analysis tool. You are asked to analyze the time complexity of the following code. Respond with a time complexity, together with the signature of the method. No extra content, only the time complexity." +
-                    "Example Answer:\\nMethodSignature(Args[] a): O(n^2)\\nMethodSignature(Args[] a): O(n log n)\\nMethodSignature(Args[] a): O(1)\\n, etc. Nothing else.";
+            "You are a time complexity analysis tool. " +
+                    "You are asked to analyze the time complexity of the provided code. " +
+                    "Respond with the signature of the method with its time complexity. Do not give any extra content." +
+                    "Example:\\nMethodSignature(Args[] a): O(n^2)\\nMethodSignature(Args[] a): O(n log n)\\nMethodSignature(Args[] a): O(1)\\n, etc. Nothing else.";
     private static final Chatgpt chatgpt  = new Chatgpt();;
 
 
