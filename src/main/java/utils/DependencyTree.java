@@ -19,14 +19,9 @@ public class DependencyTree {
         this.methods = new ArrayList<>();
     }
 
-    public static DependencyTree buildFromPSIElements(List<PsiElement> elements) {
+    public static DependencyTree buildFromPSIElements(List<MethodInfo> elements) {
         DependencyTree tree = new DependencyTree();
-
-        for (PsiElement element : elements) {
-            MethodInfo method = new MethodInfo();
-            method.setPsiElement(element);
-            tree.getMethods().add(method);
-        }
+        tree.setMethods(elements);
 
         Grouper grouper = new Grouper(tree.methods);
         List<GroupInfo> groups = grouper.run();

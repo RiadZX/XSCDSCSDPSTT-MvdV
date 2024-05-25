@@ -66,10 +66,6 @@ public class MethodInfo {
         return psiElement;
     }
 
-    public void setPsiElement(PsiElement psiElement) {
-        this.psiElement = psiElement;
-    }
-
     public List<MethodInfo> getChildren() {
         return children;
     }
