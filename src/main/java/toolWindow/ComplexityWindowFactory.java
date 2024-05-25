@@ -11,13 +11,16 @@ import com.intellij.ui.content.ContentFactory;
 import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.github.riadzx.xscdscsdpsttmvdv.services.MyProjectService;
 import services.ScanFileService;
+import utils.Convertinator;
 import utils.DependencyTree;
+import utils.GroupInfo;
 import utils.PsiHelper;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ComplexityWindowFactory implements ToolWindowFactory {
 
@@ -54,8 +57,11 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    PsiFile psiFile = PsiHelper.getCurrentFile();
-                    service.scanFile(psiFile);
+                    // get the currently opened file
+                    var res = service.scanFile(service.getCurrentFile());
+//                    Convertinator.getVariablesFromMethod(res.get(1));
+                    System.out.println(res);
+
                 }
             });
             panel.add(button);
