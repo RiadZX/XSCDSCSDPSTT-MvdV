@@ -12,10 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
-import utils.DependencyTree;
-import utils.DependencyTreeBuilder;
-import utils.MethodInfo;
-import utils.PsiHelper;
+import utils.*;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -35,5 +32,11 @@ public final class ScanFileService {
         DependencyTree dependencyTree = new DependencyTreeBuilder()
                 .addPSIElements(elements)
                 .build();
+
+        GroupInfo groupInfo = dependencyTree.getGroups().get(0);
+        String prompt = Convertinator.toPrompt(groupInfo);
+        ChatGPTAI chatGPTAI = new ChatGPTAI();
+        String response = chatGPTAI.getResponse(prompt);
+        System.out.println(response);
     }
 }

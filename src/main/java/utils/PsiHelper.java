@@ -42,7 +42,17 @@ public class PsiHelper {
 
     private static void findMethodReferences(PsiElement el, List<PsiElement> methods) {
         if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
-            methods.add(el.getReference().resolve());
+            if (el.getReference() != null) {
+                var ref = el.getReference().resolve();
+                if (ref != null) {
+                    var node = ref.getNode();
+                    if (node != null) {
+                        if (node.getElementType().toString().equals("METHOD")) {
+                            methods.add(ref);
+                        }
+                    }
+                }
+            }
         }
         for (PsiElement sub : el.getChildren()) {
             findMethodReferences(sub, methods);

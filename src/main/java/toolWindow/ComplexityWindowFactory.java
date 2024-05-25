@@ -57,10 +57,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // get the currently opened file
-                    var res = service.scanFile(service.getCurrentFile());
-//                    Convertinator.getVariablesFromMethod(res.get(1));
-                    System.out.println(res);
+                    service.scanFile(PsiHelper.getCurrentFile());
 
                 }
             });
