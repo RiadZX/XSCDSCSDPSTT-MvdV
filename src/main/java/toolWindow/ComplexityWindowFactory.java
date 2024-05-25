@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -13,6 +14,7 @@ import services.ScanFileService;
 import utils.Convertinator;
 import utils.DependencyTree;
 import utils.GroupInfo;
+import utils.PsiHelper;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -59,7 +61,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                     var res = service.scanFile(service.getCurrentFile());
 //                    Convertinator.getVariablesFromMethod(res.get(1));
                     System.out.println(res);
-                    DependencyTree.buildFromPSIElements(res);
+
                 }
             });
             panel.add(button);
