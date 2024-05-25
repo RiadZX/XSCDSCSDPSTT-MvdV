@@ -42,9 +42,5 @@ public class Convertinator {
         return res;
     }
 
-    public static String addComplexityToMethods(Map<String, String> known){
-        return null;
-    }
-
 
 }
