@@ -1,11 +1,11 @@
-import services.ChatGPTAI;
+import utils.ChatGpt;
 import org.junit.Test;
 
-public class ChatGPTAITest {
+public class ChatGptTest {
     @Test
     public void testGetResponse() {
-        ChatGPTAI chatGPTAI = new ChatGPTAI();
-        String response = chatGPTAI.getResponse("""
+        ChatGpt chatGpt = new ChatGpt();
+        String response = chatGpt.getResponse("""
                 def quicksort(array, low=0, high=None):
                     if high is None:
                         high = len(array) - 1
@@ -16,7 +16,7 @@ public class ChatGPTAITest {
                         quicksort(array, pivot_index+1, high)
                 """);
         System.out.println(response);
-         System.out.println(ChatGPTAI.extractMessageFromJSONResponse(response));
+         System.out.println(ChatGpt.extractMessageFromJSONResponse(response));
         assert true;
     }
 }

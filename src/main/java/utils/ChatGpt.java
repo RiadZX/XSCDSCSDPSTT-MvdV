@@ -1,4 +1,4 @@
-package services;
+package utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ChatGPTAI {
+public class ChatGpt {
 
     /**
      * Returns the prompt in JSON.

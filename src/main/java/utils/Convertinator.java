@@ -18,7 +18,7 @@ public class Convertinator {
 
         Map<String, String> knownComplexities = associateComplexityToMethods(group);
 
-        if(knownComplexities.keySet().size() > 0) {
+        if(!knownComplexities.keySet().isEmpty()) {
             prompt += "The time complexities of the following methods are already known. Please use them: \n";
             for (String key : knownComplexities.keySet()) {
                 prompt += "Method: " + key + " Complexity: " + knownComplexities.get(key) + "\n";
@@ -46,36 +46,5 @@ public class Convertinator {
         return null;
     }
 
-//    private static void findVariables(GroupInfo group) {
-//        group.clearVariables();
-//        for (MethodInfo method : group.getMethods()) {
-//            group.addVariables(getVariablesFromMethod(method));
-//        }
-//    }
 
-//    public static List<String> getVariablesFromMethod(MethodInfo method) {
-//        List<String> variables = new ArrayList<>();
-//        for (PsiElement el : method.getPsiElement().getChildren()) {
-//            if ("PARAMETER_LIST".equals(el.getNode().getElementType().toString())) {
-//                for (PsiElement sub : el.getChildren()) {
-//                    if ("PARAMETER".equals(sub.getNode().getElementType().toString())) {
-//                        variables.add(sub.getText());
-//                    }
-//                }
-//            } else if ("CODE_BLOCK".equals(el.getNode().getElementType().toString())) {
-//                findVariables(el, variables);
-//            }
-//        }
-//
-//        return variables;
-//    }
-//
-//    private static void findVariables(PsiElement el, List<String> variables) {
-//        for (PsiElement sub : el.getChildren()) {
-//            if ("IDENTIFIER".equals(sub.getNode().getElementType().toString())) {
-//                variables.add(sub.getText());
-//            }
-//            findVariables(sub, variables);
-//        }
-//    }
 }
