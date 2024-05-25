@@ -10,6 +10,7 @@ import com.intellij.ui.content.ContentFactory;
 import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.github.riadzx.xscdscsdpsttmvdv.services.MyProjectService;
 import services.ScanFileService;
+import utils.Convertinator;
 import utils.DependencyTree;
 
 import javax.swing.JButton;
@@ -54,6 +55,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
                     var res = service.scanFile(service.getCurrentFile());
+//                    Convertinator.getVariablesFromMethod(res.get(1));
                     System.out.println(res);
                     DependencyTree.buildFromPSIElements(res);
                 }
