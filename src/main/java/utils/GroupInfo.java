@@ -66,7 +66,6 @@ public class GroupInfo {
     }
 
     public void updateComplexities() {
-        Chatgpt chatGpt = new Chatgpt();
         TimeComplexityUpdater.updateTimeComplexities(this);
     }
 
@@ -78,15 +77,6 @@ public class GroupInfo {
             }
         }
         throw new RuntimeException("Method not found with signature '"+signature+"'");
-    }
-
-    private static MethodInfo findMethodInfoAssociatedToMethodSignature(GroupInfo group, String methodSignature){
-        for(MethodInfo method : group.getMethods()){
-            if(method.getMethod().getText().startsWith(methodSignature)){
-                return method;
-            }
-        }
-        return null;
     }
 
     @Override
