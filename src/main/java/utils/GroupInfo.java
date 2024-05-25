@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import utils.chatgpt.Chatgpt;
 import utils.chatgpt.TimeComplexityUpdater;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +68,24 @@ public class GroupInfo {
     public void updateComplexities() {
         Chatgpt chatGpt = new Chatgpt();
         TimeComplexityUpdater.updateTimeComplexities(this);
+    }
+
+    public MethodInfo getMethodBySignature(String signature) {
+        for(MethodInfo method : methods){
+            if(method.getMethod().getText().startsWith(signature)){
+                return method;
+            }
+        }
+        return null;
+    }
+
+    private static MethodInfo findMethodInfoAssociatedToMethodSignature(GroupInfo group, String methodSignature){
+        for(MethodInfo method : group.getMethods()){
+            if(method.getMethod().getText().startsWith(methodSignature)){
+                return method;
+            }
+        }
+        return null;
     }
 
     @Override
