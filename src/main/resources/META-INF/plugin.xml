@@ -9,7 +9,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.riadzx.xscdscsdpsttmvdv.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.github.riadzx.xscdscsdpsttmvdv.toolWindow.ComplexityWindowFactory" id="MyToolWindow"/>
     </extensions>
 
     <applicationListeners>
