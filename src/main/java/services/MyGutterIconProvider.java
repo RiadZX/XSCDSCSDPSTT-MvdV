@@ -51,10 +51,10 @@ public class MyGutterIconProvider implements LineMarkerProvider {
                     element,
                     element.getTextRange(),
                     AllIcons.General.Information,
-                    Pass.UPDATE_ALL,
+                    (Function<PsiElement, String>) psiElement -> text,
                     null,
-                    null,
-                    GutterIconRenderer.Alignment.RIGHT
+                    GutterIconRenderer.Alignment.RIGHT,
+                    () -> text
             );
             this.text = text;
         }
