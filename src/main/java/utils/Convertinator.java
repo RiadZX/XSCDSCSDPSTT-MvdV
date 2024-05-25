@@ -18,9 +18,11 @@ public class Convertinator {
 
         Map<String, String> knownComplexities = associateComplexityToMethods(group);
 
-        prompt += "The time complexities of the following methods are already known. Please use them: \n";
-        for(String key : knownComplexities.keySet()){
-            prompt += "Method: " + key + " Complexity: " + knownComplexities.get(key) + "\n";
+        if(knownComplexities.keySet().size() > 0) {
+            prompt += "The time complexities of the following methods are already known. Please use them: \n";
+            for (String key : knownComplexities.keySet()) {
+                prompt += "Method: " + key + " Complexity: " + knownComplexities.get(key) + "\n";
+            }
         }
 
         return prompt;
