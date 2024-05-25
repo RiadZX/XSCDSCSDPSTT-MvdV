@@ -24,7 +24,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         if (isValidElement(el)) {
             if (MethodInfo.methodInfoMap.containsKey(el)) {
                 Complexity timeComplexity = MethodInfo.methodInfoMap.get(el).getTimeComplexity();
-                return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor());
+                return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
             }
         }
         return null;
@@ -43,7 +43,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         private final String text;
         private final JBColor color;
 
-        MyLineMarkerInfo(@NotNull PsiElement element, String text, JBColor color) {
+        MyLineMarkerInfo(@NotNull PsiElement element, String text, JBColor color, String hoverText) {
             //LineMarkerInfo(T, TextRange, Icon, Function, GutterIconNavigationHandler, Alignment, Supplier)
 
             //@NotNull T element,
@@ -57,7 +57,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
                     element,
                     element.getTextRange(),
                     AllIcons.General.Information,
-                    (Function<PsiElement, String>) psiElement -> text,
+                    (Function<PsiElement, String>) psiElement -> hoverText,
                     null,
                     GutterIconRenderer.Alignment.RIGHT,
                     () -> text
