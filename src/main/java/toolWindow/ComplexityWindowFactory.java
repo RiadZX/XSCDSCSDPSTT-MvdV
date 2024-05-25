@@ -9,6 +9,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.github.riadzx.xscdscsdpsttmvdv.services.MyProjectService;
+import services.ScanFileService;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,10 +39,10 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
 
     private static class ComplexityWindow {
 
-        private final MyProjectService service;
+        private final ScanFileService service;
 
         ComplexityWindow(ToolWindow toolWindow) {
-            this.service = toolWindow.getProject().getService(MyProjectService.class);
+            this.service = toolWindow.getProject().getService(ScanFileService.class);
         }
 
         public JPanel getContent() {
@@ -51,7 +52,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
-//                    service.getCurrentFile();
+                    service.scanCurrentFile();
                 }
             });
             panel.add(button);
