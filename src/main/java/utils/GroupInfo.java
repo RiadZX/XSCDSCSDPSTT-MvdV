@@ -62,6 +62,12 @@ public class GroupInfo {
         this.children = children;
     }
 
+    public void updateComplexities() {
+        String prompt = Convertinator.toPrompt(this);
+        ChatGpt chatGpt = new ChatGpt();
+        chatGpt.askPrompt(prompt);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
@@ -76,6 +82,4 @@ public class GroupInfo {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
-
-
 }
