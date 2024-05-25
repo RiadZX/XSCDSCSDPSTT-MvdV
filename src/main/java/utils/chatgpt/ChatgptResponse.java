@@ -3,33 +3,33 @@ package utils.chatgpt;
 import java.util.List;
 
 public class ChatgptResponse {
-    private String id;
-    private String object;
-    private long created;
-    private String model;
-    private List<Choice> choices;
-    private Usage usage;
-    private String system_fingerprint;
+    public String id;
+    public String object;
+    public long created;
+    public String model;
+    public List<Choice> choices;
+    public Usage usage;
+    public String system_fingerprint;
 
 
     public static class Choice {
-        private int index;
-        private Message message;
-        private Object logprobs;
-        private String finish_reason;
+        public int index;
+        public Message message;
+        public Object logprobs;
+        public String finish_reason;
 
 
         public static class Message {
-            private String role;
-            private String content;
+            public String role;
+            public String content;
 
         }
     }
 
     public static class Usage {
-        private int prompt_tokens;
-        private int completion_tokens;
-        private int total_tokens;
+        public int prompt_tokens;
+        public int completion_tokens;
+        public int total_tokens;
     }
 
 }

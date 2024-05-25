@@ -4,7 +4,7 @@ public class Complexity {
 
     private String value;
 
-    public static Complexity getComplexity(String thing){
+    public static Complexity fromString(String thing){
         if(thing.startsWith("O(") && thing.endsWith(")")){
             return new Complexity(thing);
         }
