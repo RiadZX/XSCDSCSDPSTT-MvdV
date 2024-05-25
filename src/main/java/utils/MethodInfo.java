@@ -5,6 +5,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
@@ -13,13 +16,18 @@ public class MethodInfo {
     private String spaceComplexityLong;
     private String spaceComplexityShort;
 
-    private PsiElement method;
+    private List<MethodInfo> parents;
+    private List<MethodInfo> children;
+
+    private PsiElement psiElement;
 
     public MethodInfo() {
         this.timeComplexityLong = "";
         this.timeComplexityShort = "";
         this.spaceComplexityLong = "";
         this.spaceComplexityShort = "";
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
 
     public String getTimeComplexityLong() {
@@ -54,12 +62,28 @@ public class MethodInfo {
         this.spaceComplexityShort = spaceComplexityShort;
     }
 
-    public PsiElement getMethod() {
-        return method;
+    public PsiElement getPsiElement() {
+        return psiElement;
     }
 
-    public void setMethod(PsiElement method) {
-        this.method = method;
+    public void setPsiElement(PsiElement psiElement) {
+        this.psiElement = psiElement;
+    }
+
+    public List<MethodInfo> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MethodInfo> children) {
+        this.children = children;
+    }
+
+    public List<MethodInfo> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<MethodInfo> parents) {
+        this.parents = parents;
     }
 
     @Override

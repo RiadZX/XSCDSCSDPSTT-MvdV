@@ -14,6 +14,8 @@ import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service(Service.Level.PROJECT)
@@ -35,8 +37,10 @@ public final class ScanFileService {
         }
     }
 
-    private void parseMethod(PsiElement meth) {
-
+    private void parseMethods(List<PsiElement> methods) {
+        for (PsiElement method : methods) {
+            method.getChildren();
+        }
     }
 
     @NotNull
