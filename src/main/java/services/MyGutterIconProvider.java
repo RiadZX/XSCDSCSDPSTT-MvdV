@@ -6,6 +6,7 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.psi.PsiElement;
+import com.intellij.ui.JBColor;
 import com.intellij.util.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
 
     private String getComplexity(PsiElement el) {
 //        return el.getText();
-    return "O(n^2)";
+    return "O(n\u00B2)";
     }
 
     private boolean isValidElement(PsiElement el) {
@@ -100,7 +101,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
 
         @Override
         public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.setColor(Color.GREEN);
+            g.setColor(JBColor.GREEN);
             g.drawString(text, x, y + 12);
         }
 
