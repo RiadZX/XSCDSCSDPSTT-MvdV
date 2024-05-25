@@ -11,7 +11,7 @@ import java.util.List;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
-    private PsiElement psiElement;
+    private final PsiElement psiElement;
     private String timeComplexityLong;
     private String timeComplexityShort;
     private String spaceComplexityLong;
@@ -21,6 +21,7 @@ public class MethodInfo {
     private List<MethodInfo> children;
 
     public MethodInfo(PsiElement psiElement) {
+        this.psiElement = psiElement;
         this.timeComplexityLong = "";
         this.timeComplexityShort = "";
         this.spaceComplexityLong = "";

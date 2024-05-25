@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
+import utils.MethodInfo;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ import java.util.Objects;
 @Service(Service.Level.PROJECT)
 public final class ScanFileService {
 
-    public List<PsiElement> scanFile(PsiFile file) {
+    public List<MethodInfo> scanFile(PsiFile file) {
         if (!"JAVA".equals(file.getLanguage().getID())) {
             throw new RuntimeException("Only Java files are supported");
         }
         List<PsiElement> res = new ArrayList<>();
         scanElement(file, res);
-        return res;
+        return res.stream().map(MethodInfo::new).toList();
     }
 
     private void scanElement(PsiElement el, List<PsiElement> methods) {
