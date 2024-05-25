@@ -1,11 +1,9 @@
-package com.github.riadzx.xscdscsdpsttmvdv.toolWindow;
+package toolWindow;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBPanel;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -53,7 +51,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
-                    service.getCurrentFile();
+//                    service.getCurrentFile();
                 }
             });
             panel.add(button);

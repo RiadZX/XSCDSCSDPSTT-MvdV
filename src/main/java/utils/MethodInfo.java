@@ -1,4 +1,4 @@
-package com.github.riadzx.xscdscsdpsttmvdv.services.utils;
+package utils;
 
 import com.intellij.psi.PsiElement;
 import org.apache.commons.lang3.builder.EqualsBuilder;

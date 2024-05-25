@@ -1,4 +1,4 @@
-package com.github.riadzx.xscdscsdpsttmvdv.services.utils;
+package utils;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
