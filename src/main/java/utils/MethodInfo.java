@@ -75,12 +75,20 @@ public class MethodInfo {
         this.children = children;
     }
 
+    public void addChild(MethodInfo child) {
+        children.add(child);
+    }
+
     public List<MethodInfo> getParents() {
         return parents;
     }
 
     public void setParents(List<MethodInfo> parents) {
         this.parents = parents;
+    }
+
+    public void addParent(MethodInfo parent) {
+        parents.add(parent);
     }
 
     public PsiElement getMethod() {

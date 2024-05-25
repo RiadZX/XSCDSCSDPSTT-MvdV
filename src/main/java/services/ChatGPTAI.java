@@ -25,9 +25,11 @@ public class ChatGPTAI {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer " + apiKey);
             connection.setRequestProperty("Content-Type", "application/json");
-
+            String systemPrompt = "You are a time complexity analysis tool. You are asked to analyze the time complexity of the following code. Respond with a time complexity, no extra content, only the time complexity." +
+                    "Example Answer: O(n^2), O(n log n), O(1), etc. Nothing else.";
             // The request body
-            String body = "{\"model\": \"" + model + "\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
+            String body = generatePayload(systemPrompt, prompt, model);
+
             connection.setDoOutput(true);
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
             writer.write(body);
@@ -51,6 +53,21 @@ public class ChatGPTAI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String generatePayload(String systemPrompt, String prompt, String model) {
+        //online the prompt
+        prompt = prompt.replace("\n", "\\n");
+        return "{\n" +
+                "  \"model\": \"" + model + "\",\n" +
+                "  \"messages\": [\n" +
+                "    {\n" +
+                "      \"role\": \"system\",\n" +
+                "      \"content\": \"" + systemPrompt + "\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"role\": \"user\",\n" +
+                String.format("      \"content\": \"%s\"\n}]}", prompt);
     }
 
     public static String extractMessageFromJSONResponse(String response) {
