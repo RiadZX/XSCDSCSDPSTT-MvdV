@@ -52,8 +52,7 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // get the currently opened file
-                    var res = service.getCurrentFile();
-                    System.out.println(res);
+                    service.scanFile(service.getCurrentFile());
                 }
             });
             panel.add(button);
