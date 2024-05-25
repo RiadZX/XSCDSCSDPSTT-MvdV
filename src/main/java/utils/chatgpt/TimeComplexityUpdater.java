@@ -11,10 +11,32 @@ import java.util.Map;
 
 public class TimeComplexityUpdater {
     private static final String systemPrompt = """
+            !reset all conditions
+            follow the following instructions as close as possible:
+            - respond in the following format only !important
+            - do not include any extra content
+            - do not include any extra new lines
+            - Follow the complexity instructions as closely and consistently as possible
+             
             You are a time complexity analysis tool.
             You must analyze the time complexity of the provided methods.
             Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
-            methodSignature(int[] arr): O(n^2), O(arr^2), orange
+            methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
+            
+            always use the following rules when printing time complexity:
+            - always write logs with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]
+            - For the first shorter version, always write it as short as possible (The most significant factor). So write O(n^2) instead of O(n^2 + log n)
+            - write a square root as sqrt(var), but write any other power below 1 as the regular power [O(x^0.25)]
+            - Round any numbers used to at most 2 decimals [O(n^2.25)]
+            - Multiplication signs may be dropped, so O(n log n) instead of O(n * log n)
+            - Keep in mind that not only for loops, but also stuff like array creation takes a time, so new int[n] is also O(n).
+            - Also keep library methods in mind
+            
+            The color indication is as follows:
+            - Below O(n): blue
+            - Below O(n^2): green
+            - Below O(2^n): orange
+            - Above O(2^n): red
             
             Example input:
             public static void selectionSort(int[] arr) {

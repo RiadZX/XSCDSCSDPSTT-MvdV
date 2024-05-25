@@ -5,13 +5,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
+    public static final Map<PsiElement, MethodInfo> methodInfoMap = new HashMap<>();
     private final PsiElement psiElement;
     private Complexity timeComplexity;
     private Complexity spaceComplexity;
@@ -23,6 +22,7 @@ public class MethodInfo {
         this.psiElement = psiElement;
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
+        methodInfoMap.put(psiElement, this);
     }
 
     public Complexity getTimeComplexity() {
