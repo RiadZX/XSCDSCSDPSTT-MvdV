@@ -5,17 +5,30 @@ import utils.Complexity;
 import utils.GroupInfo;
 import utils.MethodInfo;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class TimeComplexityUpdater {
-    private static final String systemPrompt =
-            "You are a time complexity analysis tool. You are asked to analyze the time complexity of the following code. Respond with a time complexity, together with the signature of the method. No extra content, only the time complexity." +
-                    "Example Answer:\\nMethodSignature(Args[] a): O(n^2)\\nMethodSignature(Args[] a): O(n log n)\\nMethodSignature(Args[] a): O(1)\\n, etc. Nothing else.";
+    private static final String systemPrompt = readFile();
     private static final Chatgpt chatgpt  = new Chatgpt();;
 
-
+    private static String readFile() {
+        try {
+            Scanner sc = new Scanner(new FileReader("./systemPrompt.txt"));
+            String fileContents = "";
+            while (sc.hasNextLine()) {
+                fileContents += sc.nextLine();
+            }
+            return fileContents;
+        }
+        catch(FileNotFoundException e){
+            return "L bozo didn't find anything";
+        }
+    }
 
     public static void updateTimeComplexities(GroupInfo groupInfo) {
         String prompt = makePrompt(groupInfo);
