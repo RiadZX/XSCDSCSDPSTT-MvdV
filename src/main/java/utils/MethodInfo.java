@@ -14,10 +14,7 @@ public class MethodInfo {
     private String spaceComplexityLong;
     private String spaceComplexityShort;
 
-    private PsiElement method;
-
     public MethodInfo(PsiElement psiElement) {
-        this.psiElement = psiElement;
         this.timeComplexityLong = "";
         this.timeComplexityShort = "";
         this.spaceComplexityLong = "";
@@ -57,11 +54,7 @@ public class MethodInfo {
     }
 
     public PsiElement getMethod() {
-        return method;
-    }
-
-    public void setMethod(PsiElement method) {
-        this.method = method;
+        return psiElement;
     }
 
     @Override
