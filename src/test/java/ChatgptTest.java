@@ -1,10 +1,10 @@
-import utils.ChatGpt;
+import utils.chatgpt.Chatgpt;
 import org.junit.Test;
 
-public class ChatGptTest {
+public class ChatgptTest {
     @Test
     public void testGetResponse() {
-        ChatGpt chatGpt = new ChatGpt();
+        Chatgpt chatGpt = new Chatgpt();
         String response = chatGpt.getResponse("""
                 def quicksort(array, low=0, high=None):
                     if high is None:
@@ -16,7 +16,7 @@ public class ChatGptTest {
                         quicksort(array, pivot_index+1, high)
                 """);
         System.out.println(response);
-         System.out.println(ChatGpt.extractMessageFromJSONResponse(response));
+         System.out.println(Chatgpt.extractMessageFromJSONResponse(response));
         assert true;
     }
 }

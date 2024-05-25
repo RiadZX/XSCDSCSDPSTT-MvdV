@@ -1,7 +1,9 @@
-package utils;
+package utils.chatgpt;
 
+import com.google.gson.Gson;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import utils.GroupInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,23 +13,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
-public class ChatGpt {
+public class Chatgpt {
 
     private static final String url =  "https://api.openai.com/v1/chat/completions";
     private static final String apiKey = "sk-proj-PNaJCdlWEdGZjDMdYHAGT3BlbkFJmS3oZtrGmvdQT6YHJiUA";
     private static final String model = "gpt-4o";
 
-    private static final String systemPrompt =
-            "You are a time complexity analysis tool. You are asked to analyze the time complexity of the following code. Respond with a time complexity, no extra content, only the time complexity." +
-            "Example Answer: O(n^2), O(n log n), O(1), etc. Nothing else.";
 
-    public ChatGpt() {
+    public Chatgpt() {
 
-    }
-
-    public void askPrompt(String prompt) {
-        String response = getResponse(prompt);
-        System.out.println(extractMessageFromJSONResponse(response));
     }
 
     /**
@@ -35,7 +29,7 @@ public class ChatGpt {
      * @param prompt the prompt to send.
      * @return the response in JSON.
      */
-    private String getResponse(String prompt) {
+    public String getResponse(String systemPrompt, String prompt) {
         try {
             URL obj = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
@@ -88,15 +82,5 @@ public class ChatGpt {
 
         return jsonObject.toJSONString();
     }
-
-    private String extractMessageFromJSONResponse(String response) {
-        int start = response.indexOf("content")+ 11;
-
-        int end = response.indexOf("\"", start);
-
-        return response.substring(start, end);
-
-    }
-
 }
 

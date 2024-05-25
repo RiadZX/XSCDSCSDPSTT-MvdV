@@ -21,6 +21,6 @@ public final class ScanFileService {
                 .addPSIElements(elements)
                 .build();
 
-        dependencyTree.findComplexities();
+        dependencyTree.updateComplexities();
     }
 }

@@ -3,6 +3,7 @@ package utils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import utils.chatgpt.Chatgpt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,8 @@ public class GroupInfo {
     }
 
     public void updateComplexities() {
-        String prompt = Convertinator.toPrompt(this);
-        ChatGpt chatGpt = new ChatGpt();
-        chatGpt.askPrompt(prompt);
+        Chatgpt chatGpt = new Chatgpt();
+        chatGpt.updateTimeComplexities(this);
     }
 
     @Override
