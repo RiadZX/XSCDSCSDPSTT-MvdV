@@ -11,6 +11,7 @@ import java.util.List;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
+    private PsiElement psiElement;
     private String timeComplexityLong;
     private String timeComplexityShort;
     private String spaceComplexityLong;
@@ -19,9 +20,7 @@ public class MethodInfo {
     private List<MethodInfo> parents;
     private List<MethodInfo> children;
 
-    private PsiElement psiElement;
-
-    public MethodInfo() {
+    public MethodInfo(PsiElement psiElement) {
         this.timeComplexityLong = "";
         this.timeComplexityShort = "";
         this.spaceComplexityLong = "";
@@ -84,6 +83,10 @@ public class MethodInfo {
 
     public void setParents(List<MethodInfo> parents) {
         this.parents = parents;
+    }
+
+    public PsiElement getMethod() {
+        return psiElement;
     }
 
     @Override

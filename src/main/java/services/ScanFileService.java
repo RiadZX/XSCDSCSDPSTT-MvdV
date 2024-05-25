@@ -21,19 +21,21 @@ import java.util.Objects;
 @Service(Service.Level.PROJECT)
 public final class ScanFileService {
 
-    public void scanFile(PsiFile file) {
+    public List<PsiElement> scanFile(PsiFile file) {
         if (!"JAVA".equals(file.getLanguage().getID())) {
             throw new RuntimeException("Only Java files are supported");
         }
-
-
+        List<PsiElement> res = new ArrayList<>();
+        scanElement(file, res);
+        return res;
     }
 
-    private void scanElement(PsiElement el) {
-        // check if element is of type method
-//        if (el.)
+    private void scanElement(PsiElement el, List<PsiElement> methods) {
+        if ("METHOD".equals(el.getNode().getElementType().toString())) {
+            methods.add(el);
+        }
         for (PsiElement sub : el.getChildren()) {
-            scanElement(sub);
+            scanElement(sub, methods);
         }
     }
 
