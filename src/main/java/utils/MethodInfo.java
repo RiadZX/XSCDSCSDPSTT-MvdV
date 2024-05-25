@@ -13,54 +13,32 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
     private final PsiElement psiElement;
-    private String timeComplexityLong;
-    private String timeComplexityShort;
-    private String spaceComplexityLong;
-    private String spaceComplexityShort;
+    private Complexity timeComplexity;
+    private Complexity spaceComplexity;
 
     private List<MethodInfo> parents;
     private List<MethodInfo> children;
 
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
-        this.timeComplexityLong = "";
-        this.timeComplexityShort = "";
-        this.spaceComplexityLong = "";
-        this.spaceComplexityShort = "";
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
     }
 
-    public String getTimeComplexityLong() {
-        return timeComplexityLong;
+    public Complexity getTimeComplexity() {
+        return timeComplexity;
     }
 
-    public void setTimeComplexityLong(String timeComplexityLong) {
-        this.timeComplexityLong = timeComplexityLong;
+    public void setTimeComplexity(Complexity timeComplexity) {
+        this.timeComplexity = timeComplexity;
     }
 
-    public String getTimeComplexityShort() {
-        return timeComplexityShort;
+    public Complexity getSpaceComplexity() {
+        return spaceComplexity;
     }
 
-    public void setTimeComplexityShort(String timeComplexityShort) {
-        this.timeComplexityShort = timeComplexityShort;
-    }
-
-    public String getSpaceComplexityLong() {
-        return spaceComplexityLong;
-    }
-
-    public void setSpaceComplexityLong(String spaceComplexityLong) {
-        this.spaceComplexityLong = spaceComplexityLong;
-    }
-
-    public String getSpaceComplexityShort() {
-        return spaceComplexityShort;
-    }
-
-    public void setSpaceComplexityShort(String spaceComplexityShort) {
-        this.spaceComplexityShort = spaceComplexityShort;
+    public void setSpaceComplexity(Complexity spaceComplexity) {
+        this.spaceComplexity = spaceComplexity;
     }
 
     public PsiElement getPsiElement() {

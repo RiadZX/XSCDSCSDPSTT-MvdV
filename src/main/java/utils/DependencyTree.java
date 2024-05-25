@@ -58,4 +58,10 @@ public class DependencyTree {
         }
         throw new RuntimeException("Method not found");
     }
+
+    public void updateComplexities() {
+        for (GroupInfo groupInfo : groups) {
+            groupInfo.updateComplexities();
+        }
+    }
 }
