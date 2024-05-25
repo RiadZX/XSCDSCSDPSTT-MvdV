@@ -88,7 +88,7 @@ public class PsiHelper {
         return Objects.requireNonNull(PsiManager.getInstance(project).findFile(virtualFile));
     }
 
-    private static Project getCurrentProject() {
+    public static Project getCurrentProject() {
         IdeFrame ideFrame = WindowManager.getInstance().getIdeFrame(null);
         if (ideFrame != null) {
             return ideFrame.getProject();

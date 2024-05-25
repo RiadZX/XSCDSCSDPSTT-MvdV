@@ -10,7 +10,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="toolWindow.ComplexityWindowFactory" id="MyToolWindow"/>
-        <codeInsight.parameterNameHints implementationClass="services.InlineHinter" language="kotlin"
+        <codeInsight.lineMarkerProvider
+                language="JAVA"
+                implementationClass="services.MyGutterIconProvider"/>
     </extensions>
 
     <applicationListeners>
