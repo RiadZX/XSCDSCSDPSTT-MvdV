@@ -5,10 +5,11 @@ public class Complexity {
     private String value;
 
     public static Complexity fromString(String thing){
+        thing = thing.trim();
         if(thing.startsWith("O(") && thing.endsWith(")")){
             return new Complexity(thing);
         }
-        throw new RuntimeException("L bozo (404: No time complexity in prompt found)");
+        throw new RuntimeException("No time complexity found in '"+thing+"'!");
     }
 
     public Complexity(String value){
