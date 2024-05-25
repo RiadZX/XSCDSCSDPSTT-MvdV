@@ -10,7 +10,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="toolWindow.ComplexityWindowFactory" id="MyToolWindow"/>
-
+        <codeInsight.parameterNameHints implementationClass="services.InlineHinter" language="kotlin"
     </extensions>
 
     <applicationListeners>
