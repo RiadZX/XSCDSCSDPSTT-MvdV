@@ -67,7 +67,8 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
             if (Controller.methodInfoMap.containsKey(el) &&
                 Controller.methodInfoMap.get(el) != null &&
                 Controller.methodInfoMap.get(el).getTimeComplexity() != null &&
-                !Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity().isEmpty()){
+                !Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity().isEmpty())
+            {
                 String hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity();
                 TextRange range = identifierElement.getTextRange();
                 lenses.add(new kotlin.Pair<>(range, new ClickableTextCodeVisionEntry(hint, "method.complexity", (MouseEvent event, Editor editor) -> {onClick(); return Unit.INSTANCE;}, null, hint, hint, List.of())));

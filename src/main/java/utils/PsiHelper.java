@@ -5,12 +5,17 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.IdeFrame;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.impl.compiled.ClsMemberImpl;
+import com.intellij.psi.impl.java.stubs.impl.PsiClassStubImpl;
+import com.intellij.psi.impl.java.stubs.impl.PsiMethodStubImpl;
+import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,17 +40,18 @@ public class PsiHelper {
         }
     }
 
-    public static List<PsiElement> findMethodReferences(PsiElement element) {
+    public static Pair<List<PsiElement>, List<PsiElement>> findMethodReferences(PsiElement element) {
         List<PsiElement> res = new ArrayList<>();
-        findMethodReferences(element, res);
-        return res;
+        List<PsiElement> compiled = new ArrayList<>();
+        findMethodReferences(element, res, compiled);
+        return new Pair<>(res, compiled);
     }
 
     public static void resetAnnotationsAndStuff() {
         DaemonCodeAnalyzer.getInstance(PsiHelper.getCurrentProject()).restart();
     }
 
-    private static void findMethodReferences(PsiElement el, List<PsiElement> methods) {
+    private static void findMethodReferences(PsiElement el, List<PsiElement> methods, List<PsiElement> compiled) {
         if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
             if (el.getReference() != null) {
                 var ref = el.getReference().resolve();
@@ -55,12 +61,14 @@ public class PsiHelper {
                         if (node.getElementType().toString().equals("METHOD")) {
                             methods.add(ref);
                         }
+                    } else  {
+                        compiled.add(ref);
                     }
                 }
             }
         }
         for (PsiElement sub : el.getChildren()) {
-            findMethodReferences(sub, methods);
+            findMethodReferences(sub, methods, compiled);
         }
     }
 

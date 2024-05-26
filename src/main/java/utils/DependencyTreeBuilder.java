@@ -1,7 +1,9 @@
 package utils;
 
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.compiled.ClsMemberImpl;
 
 import java.util.*;
 
@@ -26,12 +28,18 @@ public class DependencyTreeBuilder {
     private void findParentsAndChildren() {
         for (MethodInfo methodInfo : dependencyTree.getMethods()) {
             PsiElement psiElement = methodInfo.getPsiElement();
-            PsiHelper.findMethodReferences(psiElement).forEach(child -> {
+            Pair<List<PsiElement>, List<PsiElement>> references = PsiHelper.findMethodReferences(psiElement);
+            references.first.forEach(child -> {
                 MethodInfo childInfo = dependencyTree.getMethodInfo(child);
-                if (Controller.methodInfoMap.containsKey(childInfo)) {
+                if (Controller.methodInfoMap.containsKey(child)) {
                     methodInfo.addChild(childInfo);
                     childInfo.addParent(methodInfo);
                 }
+            });
+
+            references.second.forEach(child -> {
+                String name = child.getText();
+                // ask gpt for complexity
             });
         }
     }
