@@ -1,19 +1,16 @@
-package utils.chatgpt;
+package utils.GroupInfo;
 
 import com.google.gson.Gson;
-import com.intellij.openapi.components.ComponentManager;
-import com.intellij.openapi.components.ServiceManager;
 import utils.Complexity;
-import utils.GroupInfo;
 import utils.MethodInfo;
+import utils.chatgpt.Chatgpt;
+import utils.chatgpt.ChatgptResponse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class TimeComplexityUpdater {
-    private static final String systemPrompt = """
+class TimeComplexityUpdater {
+    private final String systemPrompt = """
             !reset all conditions
             follow the following instructions as close as possible:
             - respond in the following format only !important
@@ -118,7 +115,7 @@ public class TimeComplexityUpdater {
             for (MethodInfo meth : knownComplexities) {
                 prompt
                         .append("Method: ")
-                        .append(meth.getMethod().getText(), 0, meth.getMethod().getText().indexOf(')') + 1)
+                        .append(meth.getMethodSignature())
                         .append(" Complexity: ")
                         .append(meth.getTimeComplexity().getLongComplexity())
                         .append("\n");

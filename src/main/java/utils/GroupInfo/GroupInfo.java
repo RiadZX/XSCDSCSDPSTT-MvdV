@@ -1,9 +1,9 @@
-package utils;
+package utils.GroupInfo;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import utils.chatgpt.TimeComplexityUpdater;
+import utils.MethodInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,22 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class GroupInfo {
     private List<MethodInfo> methods;
-    private List<GroupInfo> parents;
-    private List<GroupInfo> children;
+    private List<GroupInfo> dependsOn;
+    private List<GroupInfo> providesFor;
     private Set<String> variables;
 
     public GroupInfo() {
         this.methods = new ArrayList<>();
-        this.parents = new ArrayList<>();
-        this.children = new ArrayList<>();
+        this.dependsOn = new ArrayList<>();
+        this.providesFor = new ArrayList<>();
+    }
+
+    public String getMethodSignatures() {
+        StringBuilder sb = new StringBuilder();
+        for(MethodInfo method : methods){
+            sb.append(method.getMethodSignature()).append(", ");
+        }
+        return sb.toString();
     }
 
     public List<MethodInfo> getMethods() {
@@ -31,12 +39,12 @@ public class GroupInfo {
         this.methods = methods;
     }
 
-    public List<GroupInfo> getParents() {
-        return parents;
+    public List<GroupInfo> getDependsOn() {
+        return dependsOn;
     }
 
-    public void setParents(List<GroupInfo> parents) {
-        this.parents = parents;
+    public void setDependsOn(List<GroupInfo> dependsOn) {
+        this.dependsOn = dependsOn;
     }
 
     public Set<String> getVariables() {
@@ -55,21 +63,21 @@ public class GroupInfo {
         this.variables.clear();
     }
 
-    public List<GroupInfo> getChildren() {
-        return children;
+    public List<GroupInfo> getProvidesFor() {
+        return providesFor;
     }
 
     public List<GroupInfo> getAllSubGroups() {
         List<GroupInfo> allSubGroups = new ArrayList<>();
-        for(GroupInfo child : children){
+        for(GroupInfo child : providesFor){
             allSubGroups.add(child);
             allSubGroups.addAll(child.getAllSubGroups());
         }
         return allSubGroups;
     }
 
-    public void setChildren(List<GroupInfo> children) {
-        this.children = children;
+    public void setProvidesFor(List<GroupInfo> providesFor) {
+        this.providesFor = providesFor;
     }
 
     public void updateComplexities() {
@@ -78,9 +86,9 @@ public class GroupInfo {
     }
 
     public MethodInfo findMethodBySignature(String signature) {
-        for(MethodInfo method : methods){
-            String text = method.getMethod().getText();
-            if(text.contains(signature)){
+        for (MethodInfo method : methods) {
+            String text = method.getPsiElement().getText();
+            if (text.contains(signature)){
                 return method;
             }
         }
