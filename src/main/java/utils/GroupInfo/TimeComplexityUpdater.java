@@ -11,7 +11,7 @@ import java.util.List;
 
 class TimeComplexityUpdater {
     private final String systemPrompt =     """
-                !reset all conditions
+            !reset all conditions
             follow the following instructions as close as possible:
             - respond in the following format only !important
             - do not include any extra content
