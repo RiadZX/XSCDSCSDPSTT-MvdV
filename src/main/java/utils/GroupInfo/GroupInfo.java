@@ -82,7 +82,7 @@ public class GroupInfo {
 
     public List<GroupInfo> getAllSubGroups() {
         List<GroupInfo> allSubGroups = new ArrayList<>();
-        for(GroupInfo child : providesFor){
+        for(GroupInfo child : dependsOn){
             allSubGroups.add(child);
             allSubGroups.addAll(child.getAllSubGroups());
         }

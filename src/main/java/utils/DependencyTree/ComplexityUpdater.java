@@ -17,7 +17,7 @@ class ComplexityUpdater {
     public ComplexityUpdater(DependencyTree dependencyTree) {
         this.dependencyTree = dependencyTree;
         updated = new CopyOnWriteArraySet<>();
-        executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 2);
+        executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
     }
 
     public void run() {
@@ -31,13 +31,11 @@ class ComplexityUpdater {
     }
 
     private void updateComplexities(GroupInfo groupInfo) {
-//        executor.submit(() -> {
-//            try {
+        executor.submit(() -> {
                 updated.add(groupInfo);
                 if (groupInfo.isOutdated()) {
                     ReadAction.run(() -> {
                         System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures() + ")");
-//                        Thread.sleep(2000);
                         groupInfo.updateComplexities();
                         PsiHelper.resetIdeAnnotations();
                     });
@@ -47,9 +45,6 @@ class ComplexityUpdater {
                         updateComplexities(child);
                     }
                 }
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
+        });
     }
 }
