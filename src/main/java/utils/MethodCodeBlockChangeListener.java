@@ -14,7 +14,7 @@ public class MethodCodeBlockChangeListener extends PsiTreeChangeAdapter {
         if (element != null) {
             if(element.getNode() == null) return;
             if ("java.FILE".equals(element.getNode().getElementType().toString())) {
-                new ScanFileService().scanFile(element.getContainingFile());
+//                new ScanFileService().scanFile(element.getContainingFile());
             }
         }
     }
