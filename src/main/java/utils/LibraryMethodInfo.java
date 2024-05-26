@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryMethodInfo {
-    private final Complexity timeComplexity;
-    private final Complexity spaceComplexity;
+    private Complexity timeComplexity;
+    private Complexity spaceComplexity;
 
-    public LibraryMethodInfo(Complexity timeComplexity, Complexity spaceComplexity) {
-        this.timeComplexity = timeComplexity;
-        this.spaceComplexity = spaceComplexity;
+    public LibraryMethodInfo() {
     }
 
     public Complexity getTimeComplexity() {
@@ -20,5 +18,13 @@ public class LibraryMethodInfo {
 
     public Complexity getSpaceComplexity() {
         return spaceComplexity;
+    }
+
+    public void setTimeComplexity(Complexity timeComplexity) {
+        this.timeComplexity = timeComplexity;
+    }
+
+    public void setSpaceComplexity(Complexity spaceComplexity) {
+        this.spaceComplexity = spaceComplexity;
     }
 }
