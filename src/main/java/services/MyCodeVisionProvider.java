@@ -26,7 +26,6 @@ import java.util.List;
 
 public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
 
-    private boolean isLoading;
 
     @NotNull
     @Override
@@ -75,7 +74,10 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
                 String hint;
                 if(Controller.methodInfoMap.get(el).isUpdating()){
                     hint = MyBundle.message("Loading");
-                } else {
+                } else if(Controller.methodInfoMap.get(el).isOutdated()){
+                    //TODO
+                    hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity() + " " + MyBundle.message("Outdated");
+                }else {
                     hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity();
                 }
                 TextRange range = identifierElement.getTextRange();
@@ -99,9 +101,5 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
 
     private void onClick() {
         // Do something when the lens is clicked
-    }
-
-    public void setLoading(boolean val){
-        this.isLoading = val;
     }
 }
