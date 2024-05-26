@@ -42,10 +42,10 @@ public class MyGutterIconProvider implements LineMarkerProvider {
 
     @Nullable
     private LineMarkerInfo<?> addMarker(@NotNull PsiElement el, PsiElement refEl) {
-        if (Controller.methodInfoMap.get(refEl) == null &&
+        if (Controller.dependencyTree.findMethodInfo(refEl) == null &&
             Controller.libraryMethodInfoMap.get(refEl) == null) return null;
-        Complexity timeComplexity = Controller.methodInfoMap.get(refEl) != null ?
-                Controller.methodInfoMap.get(refEl).getTimeComplexity() :
+        Complexity timeComplexity = Controller.dependencyTree.findMethodInfo(refEl) != null ?
+                Controller.dependencyTree.findMethodInfo(refEl).getTimeComplexity() :
                 Controller.libraryMethodInfoMap.get(refEl).getTimeComplexity();
         if (timeComplexity == null) return null;
         PsiElement identifierElement = getIdentifierElement(el);

@@ -4,9 +4,10 @@ import com.intellij.openapi.components.Service;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import utils.*;
-import utils.DependencyTree.DependencyTree;
 
 import java.util.List;
+
+import static utils.Controller.dependencyTree;
 
 @Service(Service.Level.PROJECT)
 public final class ScanFileService {
@@ -18,8 +19,7 @@ public final class ScanFileService {
 
         List<PsiElement> elements = PsiHelper.findMethods(file);
 
-        DependencyTree dependencyTree = new DependencyTree();
-        dependencyTree.setMethods(elements.stream().map(MethodInfo::new).toList());
+        dependencyTree.addMethods(elements.stream().map(MethodInfo::new).toList());
         dependencyTree.updateAll();
 
         Controller.timeActive = true;

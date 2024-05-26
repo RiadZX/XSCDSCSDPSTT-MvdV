@@ -24,7 +24,6 @@ public class MethodInfo {
         this.psiElement = psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();
-        Controller.methodInfoMap.put(psiElement, this);
     }
 
     public boolean isOutdated() {
