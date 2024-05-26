@@ -12,81 +12,40 @@ import java.util.List;
 class TimeComplexityUpdater {
     private final String systemPrompt =     """
             !reset all conditions
-            follow the following instructions as close as possible:
-            - respond in the following format only !important
-            - do not include any extra content
-            - do not include any extra new lines
-            - Follow the complexity instructions as closely and consistently as possible
+                    follow the following instructions as close as possible:
+                    - respond in the following format only !important
+                    - do not include any extra content
+                    - do not include any extra new lines
+                    - Follow the complexity instructions as closely and consistently as possible
 
-            You are a time complexity analysis tool.
-            You must analyze the time complexity of the provided methods.
+            You will be given lines with method signatures. These methods may be library methods.
+            If you do not recognize the library method, respond with O(?) (In both long and short complexity), with color pink
             Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
             methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
-            Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
-            methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
 
-            always use the following rules when printing time complexity:
-            - always write logs and sqrts with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]. Do this only for 1 letter variables !important
-            - For the first shorter version, always write it as short as possible (The most significant factor). So write O(n^2) instead of O(n^2 + log n)
-            - write a square root as sqrt(var), but write any other power below 1 as the regular power [O(x^0.25)]
-            - Round any numbers used to at most 2 decimals [O(n^2.25)]
-            - Multiplication signs may be dropped, so O(n log n) instead of O(n * log n)
-            - Keep in mind that not only for loops, but also stuff like array creation takes a time, so new int[n] is also O(n).
-            - Also keep library methods in mind
-            - Be consistent with colors!
-            - For the simpler/shorter time complexity, try to write all variables as 1 letter vars. Preferably a logical letter (index => i)
+                    always use the following rules when printing time complexity:
+                    - always write logs and sqrts with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]. Do this only for 1 letter variables !important
+                    - For the first shorter version, always write it as short as possible (The most significant factor). So write O(n^2) instead of O(n^2 + log n)
+                    - write a square root as sqrt(var), but write any other power below 1 as the regular power [O(x^0.25)]
+                    - Round any numbers used to at most 2 decimals [O(n^2.25)]
+                    - Multiplication signs may be dropped, so O(n log n) instead of O(n * log n)
+                    - Keep in mind that not only for loops, but also stuff like array creation takes a time, so new int[n] is also O(n).
+                    - Also keep library methods in mind
+                    - Be consistent with colors!
+                    - For the simpler/shorter time complexity, try to write all variables as 1 letter vars. Preferably a logical letter (index => i)
 
-            The color indication is as follows:
-            - Below O(n): blue [for example: O(1), O(log n), O(sqrt n), O((log n)^2)
-            - Below O(n^2): green [for example: O(n), O(n log n), O(n sqrt n), O(n log(n^2))]
-            - Below O(2^n): orange [for example: O(n^2), O(n^3), O(n^6)]
-            - Above O(2^n): red [for example: O(2^n), O(n!), O(n^n)]
+                    The color indication is as follows:
+                    - Below O(n): blue [for example: O(1), O(log n), O(sqrt n), O((log n)^2)
+                    - Below O(n^2): green [for example: O(n), O(n log n), O(n sqrt n), O(n log(n^2))]
+                    - Below O(2^n): orange [for example: O(n^2), O(n^3), O(n^6)]
+                    - Above O(2^n): red [for example: O(2^n), O(n!), O(n^n)]
 
             Example input:
             java.util.List<E> java.util.List.of(E e1, E e2, E e3);
 
             Example output:
             java.util.List<E> java.util.List.of(E e1, E e2, E e3): O(1), O(1), blue
-
-            Example input:
-            public static void selectionSort(int[] arr) {
-                int n = getArrLength(arr);
-                for (int i = 0; i < n - 1; i++) {
-                    int minIndex = i;
-                    for (int j = i + 1; j < n; j++) {
-                        if (arr[j] < arr[minIndex]) {
-                            minIndex = j;
-                        }
-                    }
-                    // Swap the found minimum element with the first
-                    // element of the unsorted part
-                    int temp = arr[minIndex];
-                    arr[minIndex] = arr[i];
-                    arr[i] = temp;
-                }
-            }
-            public void traversePreOrderWithoutRecursion() {
-                Stack<Node> stack = new Stack<Node>();
-                Node current = root;
-                stack.push(root);
-                while(!stack.isEmpty()) {
-                    current = stack.pop();
-                    visit(current.value);
-
-                    if(current.right != null) {
-                        stack.push(current.right);
-                    }
-                    if(current.left != null) {
-                        stack.push(current.left);
-                    }
-                }
-            }
-
-            Example Output:
-            selectionSort(int[] arr): O(n^2), O(arr^2), orange
-            traversePreOrderWithoutRecursion: O(1), O(1), green
 """;
-
 
 
     private final Chatgpt chatgpt;
