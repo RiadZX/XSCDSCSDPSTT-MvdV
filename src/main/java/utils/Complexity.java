@@ -8,6 +8,12 @@ public class Complexity {
     private String shortComplexity;
     private JBColor color;
 
+    public Complexity() {
+        this.shortComplexity = null;
+        this.longComplexity = null;
+        this.color = null;
+    }
+
     public Complexity(String shortComplexity, String longComplexity, JBColor color){
         this.shortComplexity = shortComplexity;
         this.longComplexity = longComplexity;

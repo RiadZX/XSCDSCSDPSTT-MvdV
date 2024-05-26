@@ -120,6 +120,7 @@ class TimeComplexityUpdater {
 
     public void run() {
         for (int i = 0; i < 5; i++) {
+            System.out.println("Sending prompt to update time complexities of: "+groupInfo.getMethodSignatures());
             String prompt = makePrompt();
             String response = chatgpt.getResponse(prompt1(), prompt);
             try {
@@ -171,6 +172,7 @@ class TimeComplexityUpdater {
     }
 
     private void parseResponse(String response) {
+        System.out.println("Parsing ai response for "+groupInfo.getMethodSignatures());
         try {
             ChatgptResponse chatgptResponse = new Gson().fromJson(response, ChatgptResponse.class);
             String content = chatgptResponse.choices.get(0).message.content;
@@ -186,6 +188,8 @@ class TimeComplexityUpdater {
                 Complexity complexity = new Complexity(shortTimeComplexity, longTimeComplexity, colorTimeComplexity);
                 MethodInfo methodInfo = groupInfo.findMethodBySignature(methodSignature);
                 methodInfo.setTimeComplexity(complexity);
+                methodInfo.setOutdated(false);
+                System.out.println("Complexity for "+methodInfo.getMethodSignature()+" is "+complexity.getShortComplexity());
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("Error parsing response from ChatGPT: " + e.getMessage());

@@ -31,6 +31,7 @@ public class MethodInfo {
         this.psiElement = (PsiMethod) psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();
+        this.timeComplexity = new Complexity();
         this.id = idCounter++;
     }
 

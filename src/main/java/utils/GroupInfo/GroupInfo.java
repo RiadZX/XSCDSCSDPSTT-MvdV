@@ -100,7 +100,7 @@ public class GroupInfo {
 
     public MethodInfo findMethodBySignature(String signature) {
         for (MethodInfo method : methods) {
-            String text = method.getPsiElement().getText();
+            String text = method.getMethodSignature();
             if (text.contains(signature)){
                 return method;
             }

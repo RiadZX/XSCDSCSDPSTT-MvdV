@@ -63,7 +63,6 @@ public class MyGutterIconProvider implements LineMarkerProvider {
     }
 
     private String formatPower(String complexity){
-        System.out.println(complexity);
         //replace ^1,^2, ^3 with superscript
         return complexity.
                 replace("^1", "\u00B9")
