@@ -122,4 +122,12 @@ public class GroupInfo {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
+    public void addDependsOn(GroupInfo group) {
+        this.dependsOn.add(group);
+    }
+
+    public void addProvidedFor(GroupInfo group) {
+        this.providesFor.add(group);
+    }
 }

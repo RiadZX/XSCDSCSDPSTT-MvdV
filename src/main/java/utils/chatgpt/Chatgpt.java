@@ -3,6 +3,7 @@ package utils.chatgpt;
 import com.intellij.openapi.components.Service;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import toolWindow.ComplexityWindowFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 @Service(Service.Level.PROJECT)
-public class Chatgpt {
+public final class Chatgpt {
 
     private static final String url =  "https://api.openai.com/v1/chat/completions";
     private static final String apiKey = "sk-proj-PNaJCdlWEdGZjDMdYHAGT3BlbkFJmS3oZtrGmvdQT6YHJiUA";
@@ -30,6 +31,7 @@ public class Chatgpt {
      * @return the response in JSON.
      */
     public String getResponse(String systemPrompt, String prompt) {
+        ComplexityWindowFactory.ComplexityWindow.displayLoad();
         try {
             URL obj = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
@@ -56,7 +58,7 @@ public class Chatgpt {
                 response.append(line);
             }
             br.close();
-
+            ComplexityWindowFactory.ComplexityWindow.undisplayLoad();
             // calls the method to extract the message.
             return response.toString();
 

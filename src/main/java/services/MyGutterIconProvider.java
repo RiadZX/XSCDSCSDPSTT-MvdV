@@ -50,7 +50,9 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         if (timeComplexity == null) return null;
         PsiElement identifierElement = getIdentifierElement(el);
         if (identifierElement == null) return null;
-        return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+        String hoverText = identifierElement.getText();
+        hoverText += ": " + timeComplexity.getLongComplexity();
+        return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), hoverText);
     }
 
     private PsiElement getIdentifierElement(PsiElement el) {

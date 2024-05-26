@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.codeInsight.codeVision.CodeVisionHost;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.IdeFrame;
@@ -48,7 +49,9 @@ public class PsiHelper {
     }
 
     public static void resetAnnotationsAndStuff() {
-        DaemonCodeAnalyzer.getInstance(PsiHelper.getCurrentProject()).restart();
+        Project project = PsiHelper.getCurrentProject();
+        PsiManager.getInstance(project).dropPsiCaches();
+        DaemonCodeAnalyzer.getInstance(project).restart();
     }
 
     private static void findMethodReferences(PsiElement el, List<PsiElement> methods, List<PsiElement> compiled) {
