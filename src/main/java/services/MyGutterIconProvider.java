@@ -51,7 +51,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         PsiElement identifierElement = getIdentifierElement(el);
         if (identifierElement == null) return null;
         String gutterText = timeComplexity.getShortComplexity();
-        if(Controller.methodInfoMap.get(refEl) != null && !Controller.methodInfoMap.get(refEl).isOutdated()){
+        if(Controller.dependencyTree.findMethodInfo(refEl) != null && !Controller.dependencyTree.findMethodInfo(refEl).isOutdated()){
             gutterText += " \u27F3";
             timeComplexity.setColor("pink");
         }
