@@ -16,6 +16,7 @@ public class MethodInfo {
 
     private List<MethodInfo> parents;
     private List<MethodInfo> children;
+    private boolean isUpdating;
 
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
@@ -85,5 +86,13 @@ public class MethodInfo {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public void setUpdating(boolean val){
+        this.isUpdating = val;
+    }
+
+    public boolean isUpdating(){
+        return this.isUpdating;
     }
 }

@@ -20,17 +20,17 @@ class ComplexityUpdater {
     }
 
     private void updateComplexities() {
-        try (
-                ExecutorService executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
-                ) {
+//        try (
+//                ExecutorService executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
+//                ) {
             for (GroupInfo groupInfo : dependencyTree.getGroups()) {
-                executor.submit(() -> {
-                        ReadAction.run(() -> {
+                //executor.submit(() -> {
+                      //  ReadAction.run(() -> {
                             System.out.println("Updating complexities for group: " + groupInfo.hashCode());
                             groupInfo.updateComplexities();
-                        });
-                });
-            }
+                  //      });
+                //});
+            //}
         }
     }
 }

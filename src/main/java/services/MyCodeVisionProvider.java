@@ -1,6 +1,7 @@
 package services;
 
 
+import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import com.intellij.codeInsight.codeVision.CodeVisionAnchorKind;
 import com.intellij.codeInsight.codeVision.CodeVisionEntry;
 import com.intellij.codeInsight.codeVision.CodeVisionRelativeOrdering;
@@ -71,7 +72,12 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
                 Controller.methodInfoMap.get(el).getTimeComplexity() != null &&
                 !Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity().isEmpty())
             {
-                String hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity();
+                String hint;
+                if(Controller.methodInfoMap.get(el).isUpdating()){
+                    hint = MyBundle.message("Loading");
+                } else {
+                    hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity();
+                }
                 TextRange range = identifierElement.getTextRange();
                 lenses.add(new kotlin.Pair<>(range, new ClickableTextCodeVisionEntry(hint, "method.complexity", (MouseEvent event, Editor editor) -> {onClick(); return Unit.INSTANCE;}, null, hint, hint, List.of())));
             }
