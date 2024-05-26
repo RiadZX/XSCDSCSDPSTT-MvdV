@@ -47,11 +47,11 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         Complexity timeComplexity = Controller.dependencyTree.findMethodInfo(refEl) != null ?
                 Controller.dependencyTree.findMethodInfo(refEl).getTimeComplexity() :
                 Controller.libraryMethodInfoMap.get(refEl).getTimeComplexity();
-        if (timeComplexity == null) return null;
+        if (timeComplexity == null || !timeComplexity.isKnown()) return null;
         PsiElement identifierElement = getIdentifierElement(el);
         if (identifierElement == null) return null;
         String gutterText = timeComplexity.getShortComplexity();
-        if(Controller.dependencyTree.findMethodInfo(refEl) != null && !Controller.dependencyTree.findMethodInfo(refEl).isOutdated()){
+        if(Controller.dependencyTree.findMethodInfo(refEl) != null && Controller.dependencyTree.findMethodInfo(refEl).isOutdated()){
             gutterText += " \u27F3";
             timeComplexity.setColor("pink");
         }
@@ -62,7 +62,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         return new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), hoverText);
     }
 
-    private String formatPower(String complexity){
+    private String formatPower(@NotNull String complexity){
         //replace ^1,^2, ^3 with superscript
         return complexity.
                 replace("^1", "\u00B9")
