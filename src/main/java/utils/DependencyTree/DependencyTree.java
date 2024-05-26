@@ -52,6 +52,7 @@ public class DependencyTree {
         System.out.println("All methods:");
         for (MethodInfo methodInfo : methods) {
             System.out.println("Method: "+methodInfo.getMethodSignature());
+            System.out.println(methodInfo.getPsiElement().getText());
         }
     }
 

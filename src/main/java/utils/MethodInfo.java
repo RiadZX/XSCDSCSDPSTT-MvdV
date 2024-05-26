@@ -1,6 +1,8 @@
 package utils;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,7 +15,7 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class MethodInfo {
     private static int idCounter = 0;
     private int id;
-    private final PsiElement psiElement;
+    private final PsiMethod psiElement;
     private Complexity timeComplexity;
     private Complexity spaceComplexity;
 
@@ -26,7 +28,7 @@ public class MethodInfo {
     private boolean isOutdated;
 
     public MethodInfo(PsiElement psiElement) {
-        this.psiElement = psiElement;
+        this.psiElement = (PsiMethod) psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();
         this.id = idCounter++;
@@ -49,7 +51,17 @@ public class MethodInfo {
     }
 
     public String getMethodSignature() {
-        return psiElement.getText().substring(0, psiElement.getText().indexOf(')') + 1);
+        PsiMethod meth = this.psiElement;
+        String className = meth.getContainingClass() != null ? meth.getContainingClass().getQualifiedName() + "." : "";
+        StringBuilder res = new StringBuilder(meth.getReturnType().getCanonicalText() + " " + className + meth.getName() + "(");
+        for (PsiParameter parameter : meth.getParameterList().getParameters()) {
+            res.append(parameter.getType().getCanonicalText()).append(" ").append(parameter.getName()).append(", ");
+        }
+        if (meth.getParameterList().getParameters().length > 0) {
+            res = new StringBuilder(res.substring(0, res.length() - 2));
+        }
+        res.append(")");
+        return res.toString();
     }
 
     public Complexity getTimeComplexity() {
