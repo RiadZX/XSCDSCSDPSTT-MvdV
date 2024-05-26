@@ -43,10 +43,13 @@ class ConnectedComponentsFinder {
             }
         }
 
-        visited.clear();
         for (MethodInfo node : graph) {
-            if (!visited.contains(node)) {
-                dfs3(node);
+            for (MethodInfo child : node.getProvidesFor()) {
+                if (!node.getGroup().equals(child.getGroup()) && !connected.contains(new Pair<>(node.getGroup(), child.getGroup()))) {
+                    node.getGroup().addProvidedFor(child.getGroup());
+                    child.getGroup().addDependsOn(node.getGroup());
+                    connected.add(new Pair<>(node.getGroup(), child.getGroup()));
+                }
             }
         }
 
@@ -80,20 +83,6 @@ class ConnectedComponentsFinder {
         for (MethodInfo parent : reversedGraph.getOrDefault(node, new ArrayList<>())) {
             if (!visited.contains(parent)) {
                 dfs2(parent, reversedGraph, scc);
-            }
-        }
-    }
-
-    private void dfs3(MethodInfo node) {
-        visited.add(node);
-        for (MethodInfo child : node.getProvidesFor()) {
-            if (!visited.contains(child)) {
-                if (!node.getGroup().equals(child.getGroup()) && !connected.contains(new Pair<>(node.getGroup(), child.getGroup()))) {
-                    node.getGroup().addProvidedFor(child.getGroup());
-                    child.getGroup().addDependsOn(node.getGroup());
-                    connected.add(new Pair<>(node.getGroup(), child.getGroup()));
-                }
-                dfs3(child);
             }
         }
     }
