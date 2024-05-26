@@ -72,17 +72,17 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                         }
                     });
 
-                            service.scanFile(PsiHelper.getCurrentFile());
+                    service.scanFile(PsiHelper.getCurrentFile());
 
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    loadingLabel.setVisible(false);
-                                    panel.revalidate();
-                                    panel.repaint();
-                                }
-                            });
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingLabel.setVisible(false);
+                            panel.revalidate();
+                            panel.repaint();
                         }
+                    });
+                }
             });
 
             buttonPanel.add(button);

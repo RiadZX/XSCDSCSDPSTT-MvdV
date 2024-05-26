@@ -17,11 +17,22 @@ public class MethodInfo {
     private List<MethodInfo> dependsOn;
     private List<MethodInfo> providesFor;
 
+    private boolean isUpdating;
+    private boolean isOutdated;
+
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();
         Controller.methodInfoMap.put(psiElement, this);
+    }
+
+    public boolean isOutdated() {
+        return isOutdated;
+    }
+
+    public void setOutdated(boolean outdated) {
+        isOutdated = outdated;
     }
 
     public String getMethodSignature() {
@@ -86,5 +97,13 @@ public class MethodInfo {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public void setUpdating(boolean val){
+        this.isUpdating = val;
+    }
+
+    public boolean isUpdating(){
+        return this.isUpdating;
     }
 }

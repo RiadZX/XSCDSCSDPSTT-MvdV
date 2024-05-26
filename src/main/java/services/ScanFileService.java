@@ -20,7 +20,7 @@ public final class ScanFileService {
 
         DependencyTree dependencyTree = new DependencyTree();
         dependencyTree.setMethods(elements.stream().map(MethodInfo::new).toList());
-        dependencyTree.update();
+        dependencyTree.updateAll();
 
         Controller.timeActive = true;
         PsiHelper.resetAnnotationsAndStuff();
