@@ -1,5 +1,6 @@
 package utils.DependencyTree;
 
+import com.intellij.openapi.util.Pair;
 import utils.GroupInfo.GroupInfo;
 import utils.MethodInfo;
 
@@ -8,11 +9,13 @@ import java.util.*;
 class ConnectedComponentsFinder {
     private Stack<MethodInfo> stack;
     private Set<MethodInfo> visited;
+    private Set<Pair<GroupInfo, GroupInfo>> connected;
     private List<MethodInfo> graph;
 
     public ConnectedComponentsFinder(List<MethodInfo> graph) {
         stack = new Stack<>();
         visited = new HashSet<>();
+        connected = new HashSet<>();
         this.graph = graph;
     }
 
@@ -37,6 +40,13 @@ class ConnectedComponentsFinder {
                 GroupInfo scc = new GroupInfo();
                 dfs2(node, reversedGraph, scc);
                 sccList.add(scc);
+            }
+        }
+
+        visited.clear();
+        for (MethodInfo node : graph) {
+            if (!visited.contains(node)) {
+                dfs3(node);
             }
         }
 
@@ -66,9 +76,24 @@ class ConnectedComponentsFinder {
     private void dfs2(MethodInfo node, Map<MethodInfo, List<MethodInfo>> reversedGraph, GroupInfo scc) {
         visited.add(node);
         scc.getMethods().add(node);
+        node.linkGroup(scc);
         for (MethodInfo parent : reversedGraph.getOrDefault(node, new ArrayList<>())) {
             if (!visited.contains(parent)) {
                 dfs2(parent, reversedGraph, scc);
+            }
+        }
+    }
+
+    private void dfs3(MethodInfo node) {
+        visited.add(node);
+        for (MethodInfo child : node.getProvidesFor()) {
+            if (!visited.contains(child)) {
+                if (!node.getGroup().equals(child.getGroup()) && !connected.contains(new Pair<>(node.getGroup(), child.getGroup()))) {
+                    node.getGroup().addProvidedFor(child.getGroup());
+                    child.getGroup().addDependsOn(node.getGroup());
+                    connected.add(new Pair<>(node.getGroup(), child.getGroup()));
+                }
+                dfs3(child);
             }
         }
     }
