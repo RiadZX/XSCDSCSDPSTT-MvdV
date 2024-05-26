@@ -55,11 +55,27 @@ public class MyGutterIconProvider implements LineMarkerProvider {
             gutterText += " \u27F3";
             timeComplexity.setColor("pink");
         }
-//add stuff
         String hoverText = identifierElement.getText();
         hoverText += ": " + timeComplexity.getLongComplexity();
-        MyLineMarkerInfo ret = new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), timeComplexity.getLongComplexity());
-        return ret;
+        gutterText = formatPower(gutterText);
+        hoverText = formatPower(hoverText);
+        return new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), hoverText);
+    }
+
+    private String formatPower(String complexity){
+        System.out.println(complexity);
+        //replace ^1,^2, ^3 with superscript
+        return complexity.
+                replace("^1", "\u00B9")
+                .replace("^2", "\u00B2")
+                .replace("^3", "\u00B3")
+                .replace("^4", "\u2074")
+                .replace("^5", "\u2075")
+                .replace("^6", "\u2076")
+                .replace("^7", "\u2077")
+                .replace("^8", "\u2078")
+                .replace("^n", "\u207F")
+                .replace("âˆž", "\u221E");
     }
 
     private PsiElement getIdentifierElement(PsiElement el) {

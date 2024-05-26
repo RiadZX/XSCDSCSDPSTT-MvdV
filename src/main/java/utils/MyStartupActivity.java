@@ -14,7 +14,7 @@ public class MyStartupActivity implements StartupActivity {
         psiManager.addPsiTreeChangeListener(new MethodCodeBlockChangeListener(), disposable);
 
         // Ensure the disposable is disposed of when the project is closed
-        project.getMessageBus().connect(disposable).subscribe(ProjectLifecycleListener.TOPIC, new ProjectLifecycleListener() {
+        project.getMessageBus().connect().subscribe(ProjectLifecycleListener.TOPIC, new ProjectLifecycleListener() {
             public void projectClosing(@NotNull Project project) {
                 disposable.dispose();
             }
