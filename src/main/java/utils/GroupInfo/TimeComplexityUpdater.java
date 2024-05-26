@@ -103,8 +103,10 @@ class TimeComplexityUpdater {
     private String makePrompt() {
         StringBuilder prompt = new StringBuilder("Give the time complexity(ies) of the following method(s):\n");
         int counter = 0;
+
         for(MethodInfo method : groupInfo.getMethods()){
             prompt.append("Method ").append(counter++).append(": \n");
+            if (method.getPsiElement() == null) return "" ;
             prompt.append(method.getPsiElement().getText()).append("\n");
         }
 
