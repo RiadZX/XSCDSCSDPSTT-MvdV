@@ -31,12 +31,12 @@ class ComplexityUpdater {
 
     private void updateComplexities(GroupInfo groupInfo) {
         executor.submit(() -> {
-            try {
+//            try {
                 updated.add(groupInfo);
                 if (!groupInfo.isOutdated()) {
                     ReadAction.run(() -> {
                         System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures() + ")");
-                        Thread.sleep(2000);
+//                        Thread.sleep(2000);
                         groupInfo.updateComplexities();
                     });
                 }
@@ -45,9 +45,9 @@ class ComplexityUpdater {
                         updateComplexities(child);
                     }
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
         });
     }
 }

@@ -22,6 +22,7 @@ import utils.Controller;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import static utils.Controller.dependencyTree;
 
 
 public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
@@ -66,12 +67,17 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
     private void addMethodsToLenses(PsiElement el, List<kotlin.Pair<TextRange, CodeVisionEntry>> lenses) {
         if ("METHOD".equals(el.getNode().getElementType().toString())) {
             PsiElement identifierElement = getIdentifierElement(el);
-            if (Controller.methodInfoMap.containsKey(el) &&
-                Controller.methodInfoMap.get(el) != null &&
-                Controller.methodInfoMap.get(el).getTimeComplexity() != null &&
-                !Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity().isEmpty())
+            if (
+                    dependencyTree.findMethodInfo(el) != null &&
+                    dependencyTree.findMethodInfo(el).getTimeComplexity() != null &&
+                !dependencyTree.findMethodInfo(el).getTimeComplexity().getLongComplexity().isEmpty())
             {
-                String hint = Controller.methodInfoMap.get(el).getTimeComplexity().getLongComplexity();
+                String hint;
+                if(dependencyTree.findMethodInfo(el).isUpdating()){
+                    hint = MyBundle.message("Loading");
+                } else {
+                    hint = dependencyTree.findMethodInfo(el).getTimeComplexity().getLongComplexity();
+                }
                 TextRange range = identifierElement.getTextRange();
                 lenses.add(new kotlin.Pair<>(range, new ClickableTextCodeVisionEntry(hint, "method.complexity", (MouseEvent event, Editor editor) -> {onClick(); return Unit.INSTANCE;}, null, hint, hint, List.of())));
             }

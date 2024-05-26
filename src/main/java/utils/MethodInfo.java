@@ -4,18 +4,23 @@ import com.intellij.psi.PsiElement;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import utils.GroupInfo.GroupInfo;
 
 import java.util.*;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 public class MethodInfo {
+    private static int idCounter = 0;
+    private int id;
     private final PsiElement psiElement;
     private Complexity timeComplexity;
     private Complexity spaceComplexity;
 
     private List<MethodInfo> dependsOn;
     private List<MethodInfo> providesFor;
+
+    private GroupInfo group;
 
     private boolean isUpdating;
     private boolean isOutdated;
@@ -24,7 +29,15 @@ public class MethodInfo {
         this.psiElement = psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();
-        Controller.methodInfoMap.put(psiElement, this);
+        this.id = idCounter++;
+    }
+
+    public GroupInfo getGroup() {
+        return this.group;
+    }
+
+    public void linkGroup(GroupInfo group) {
+        this.group = group;
     }
 
     public boolean isOutdated() {
@@ -86,12 +99,16 @@ public class MethodInfo {
 
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        if (obj == null) return false;
+        if (obj instanceof MethodInfo meth) {
+            return Objects.equals(this.id, meth.id);
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return HashCodeBuilder.reflectionHashCode(this.id);
     }
 
     @Override

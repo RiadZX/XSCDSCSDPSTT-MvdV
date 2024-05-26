@@ -23,7 +23,6 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
     private static final Logger LOGGER = Logger.getInstance(ComplexityWindowFactory.class);
 
     public ComplexityWindowFactory() {
-        LOGGER.warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.");
     }
 
     @Override
