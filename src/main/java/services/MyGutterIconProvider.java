@@ -50,7 +50,14 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         if (timeComplexity == null) return null;
         PsiElement identifierElement = getIdentifierElement(el);
         if (identifierElement == null) return null;
-        return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+        String gutterText = timeComplexity.getShortComplexity();
+        if(Controller.methodInfoMap.get(refEl) != null && !Controller.methodInfoMap.get(refEl).isOutdated()){
+            gutterText += " \u27F3";
+            timeComplexity.setColor("pink");
+        }
+        MyLineMarkerInfo ret = new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), timeComplexity.getLongComplexity());
+//add stuff
+        return ret;
     }
 
     private PsiElement getIdentifierElement(PsiElement el) {
