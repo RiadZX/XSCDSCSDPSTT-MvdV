@@ -16,6 +16,7 @@
                 implementationClass="services.MyGutterIconProvider"/>
         <codeInsight.daemonBoundCodeVisionProvider
                 implementation="services.MyCodeVisionProvider"/>
+        <postStartupActivity implementation="utils.MyStartupActivity" />
     </extensions>
 
     <applicationListeners>
