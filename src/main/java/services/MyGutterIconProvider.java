@@ -73,8 +73,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
                 .replace("^6", "\u2076")
                 .replace("^7", "\u2077")
                 .replace("^8", "\u2078")
-                .replace("^n", "\u207F")
-                .replace("âˆž", "\u221E");
+                .replace("^n", "\u207F");
     }
 
     private PsiElement getIdentifierElement(PsiElement el) {

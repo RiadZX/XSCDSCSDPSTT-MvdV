@@ -31,7 +31,7 @@ class TimeComplexityUpdater {
                     - Also keep library methods in mind
                     - Be consistent with colors!
                     - For the simpler/shorter time complexity, try to write all variables as 1 letter vars. Preferably a logical letter (index => i)
-
+                    - For infinity, use the word: inf
                     The color indication is as follows:
                     - Below O(n): blue [for example: O(1), O(log n), O(sqrt n), O((log n)^2)
                     - Below O(n^2): green [for example: O(n), O(n log n), O(n sqrt n), O(n log(n^2))]
