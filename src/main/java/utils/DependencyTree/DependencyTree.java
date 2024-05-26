@@ -22,7 +22,7 @@ public class DependencyTree {
         this.methods = new ArrayList<>();
     }
 
-    public void update() {
+    public void updateAll() {
         RelationAdder relationAdder = new RelationAdder(this);
         relationAdder.run();
 

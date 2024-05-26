@@ -31,6 +31,15 @@ public class GroupInfo {
         return sb.toString();
     }
 
+    public boolean isOutdated() {
+        for (MethodInfo method : methods) {
+            if (method.isOutdated()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<MethodInfo> getMethods() {
         return methods;
     }

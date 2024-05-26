@@ -33,11 +33,13 @@ class ComplexityUpdater {
         executor.submit(() -> {
             try {
                 updated.add(groupInfo);
-                ReadAction.run(() -> {
-                    System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures()+")");
-                    Thread.sleep(2000);
-                    groupInfo.updateComplexities();
-                });
+                if (!groupInfo.isOutdated()) {
+                    ReadAction.run(() -> {
+                        System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures() + ")");
+                        Thread.sleep(2000);
+                        groupInfo.updateComplexities();
+                    });
+                }
                 for (GroupInfo child : groupInfo.getProvidesFor()) {
                     if (!updated.contains(child)) {
                         updateComplexities(child);
