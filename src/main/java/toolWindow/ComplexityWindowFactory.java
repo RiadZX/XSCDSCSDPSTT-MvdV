@@ -10,11 +10,13 @@ import com.intellij.ui.content.ContentFactory;
 import com.github.riadzx.xscdscsdpsttmvdv.MyBundle;
 import services.ScanFileService;
 import utils.PsiHelper;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ComplexityWindowFactory implements ToolWindowFactory {
 
@@ -46,16 +48,57 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
         }
 
         public JPanel getContent() {
-            JBPanel<JBPanel<?>> panel = new JBPanel<>();
-            JButton button = new JButton(MyBundle.message("scanActiveFile"));
+            JBPanel<JBPanel<?>> panel = new JBPanel<>(new BorderLayout());
+            JButton button = new JButton("Scan Active File");  // Replace MyBundle.message("scanActiveFile") with a static string for simplicity
+            JPanel buttonPanel = new JPanel();
+            button.setPreferredSize(new Dimension(100, 30));
+            JLabel loadingLabel = new JLabel();
+            // Icon loadingIcon = new ImageIcon(getClass().getResource("images/loading.png"));
+            // loadingLabel.setIcon(loadingIcon);
+            loadingLabel.setText("Loading...");
+            loadingLabel.setHorizontalAlignment(JLabel.CENTER);
+            loadingLabel.setVisible(false);  // Initially hidden
+
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    service.scanFile(PsiHelper.getCurrentFile());
+                    // Show the loading label
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingLabel.setVisible(true);
+                            panel.revalidate();
+                            panel.repaint();
+                        }
+                    });
 
+                    // Perform the file scan in a background thread
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            service.scanFile(PsiHelper.getCurrentFile());
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            // Hide the loading label after the task is done
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadingLabel.setVisible(false);
+                                    panel.revalidate();
+                                    panel.repaint();
+                                }
+                            });
+                        }
+                    }.execute();
                 }
             });
-            panel.add(button);
+
+            buttonPanel.add(button);
+            panel.add(loadingLabel, BorderLayout.NORTH);
+            panel.add(buttonPanel, BorderLayout.CENTER);
             return panel;
         }
     }
