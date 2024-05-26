@@ -50,7 +50,7 @@ public class RelationAdder {
                     if (Controller.signartureToMethodInfoMap.containsKey(res.toString())) {
                         methInfo = Controller.signartureToMethodInfoMap.get(res.toString());
                     } else {
-                        methInfo = new MethodInfo(null);
+                        methInfo = new MethodInfo(meth, true);
                         methods.add(res.toString());
                         libraryMethods.add(methInfo);
                         Controller.signartureToMethodInfoMap.put(res.toString(), methInfo);

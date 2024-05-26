@@ -20,7 +20,7 @@ public final class ScanFileService {
 
         List<PsiElement> elements = PsiHelper.findMethods(file);
 
-        dependencyTree.setMethods(elements.stream().map(MethodInfo::new).toList());
+        dependencyTree.setMethods(elements.stream().map(el -> new MethodInfo(el, false)).toList());
         dependencyTree.updateAll();
 
         Controller.timeActive = true;

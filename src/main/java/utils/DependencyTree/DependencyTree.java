@@ -49,18 +49,19 @@ public class DependencyTree {
     }
 
     public void showMethods() {
-        System.out.println("All methods:");
+        System.out.println("\nAll methods:");
         for (MethodInfo methodInfo : methods) {
             System.out.println("Method: "+methodInfo.getMethodSignature());
-            System.out.println(methodInfo.getPsiElement().getText());
         }
+        System.out.println();
     }
 
     public void showGroups() {
-        System.out.println("All groups:");
+        System.out.println("\nAll groups:");
         for (GroupInfo groupInfo : groups) {
             System.out.println("Group: "+groupInfo.getMethodSignatures());
         }
+        System.out.println();
     }
 
     public List<GroupInfo> getGroups() {
