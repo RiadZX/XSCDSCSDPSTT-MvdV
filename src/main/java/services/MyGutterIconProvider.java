@@ -28,16 +28,30 @@ public class MyGutterIconProvider implements LineMarkerProvider {
             if (MethodInfo.methodInfoMap.get(refEl) == null) return null;
             Complexity timeComplexity = MethodInfo.methodInfoMap.get(refEl).getTimeComplexity();
             if (timeComplexity == null) return null;
-            return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+            PsiElement identifierElement = getIdentifierElement(el);
+            if (identifierElement == null) return null;
+            return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
         } else {
             //handling something else
             if (isValidElement(el)) {
                 if (MethodInfo.methodInfoMap.get(el) == null) return null;
                 Complexity timeComplexity = MethodInfo.methodInfoMap.get(el).getTimeComplexity();
                 if (timeComplexity == null) return null;
-                return new MyLineMarkerInfo(el, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+                PsiElement identifierElement = getIdentifierElement(el);
+                if (identifierElement == null) return null;
+                return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
             }
         }
+        return null;
+    }
+
+    private PsiElement getIdentifierElement(PsiElement el) {
+       for (PsiElement child : el.getChildren()) {
+           if(child.getNode()==null) return null;
+           if ("IDENTIFIER".equals(child.getNode().getElementType().toString())) {
+               return child;
+           }
+       }
         return null;
     }
 
@@ -65,15 +79,9 @@ public class MyGutterIconProvider implements LineMarkerProvider {
         private final JBColor color;
 
         MyLineMarkerInfo(@NotNull PsiElement element, String text, JBColor color, String hoverText) {
-            //LineMarkerInfo(T, TextRange, Icon, Function, GutterIconNavigationHandler, Alignment, Supplier)
+            //Loop through the element's children to find the Identifier, this is the element where the code complexity will be written to.
 
-            //@NotNull T element,
-            //                        @NotNull TextRange range,
-            //                        Icon icon,
-            //                        int updatePass,
-            //                        @Nullable Function<? super T, String> tooltipProvider,
-            //                        @Nullable GutterIconNavigationHandler<T> navHandler,
-            //                        @NotNull GutterIconRenderer.Alignment alignment) {
+
             super(
                     element,
                     element.getTextRange(),
@@ -83,6 +91,7 @@ public class MyGutterIconProvider implements LineMarkerProvider {
                     GutterIconRenderer.Alignment.RIGHT,
                     () -> text
             );
+
             this.text = text;
             this.color = color;
         }
