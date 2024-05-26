@@ -21,22 +21,21 @@ public class DependencyTree {
     private List<GroupInfo> groups;
     private final List<MethodInfo> methods;
     private final Map<PsiElement, MethodInfo> methodInfoMap;
-    private final RelationAdder relationAdder;
-    private final ConnectedComponentsFinder grouper;
-    private final ComplexityUpdater complexityUpdater;
 
     public DependencyTree() {
         this.groups = new ArrayList<>();
         this.methods = new ArrayList<>();
         this.methodInfoMap = new HashMap<>();
-        this.relationAdder = new RelationAdder(this);
-        this.grouper = new ConnectedComponentsFinder(methods);
-        this.complexityUpdater = new ComplexityUpdater(this);
     }
 
     public void updateAll() {
+        RelationAdder relationAdder = new RelationAdder(this);
         relationAdder.run();
+
+        ConnectedComponentsFinder grouper = new ConnectedComponentsFinder(methods);
         this.groups = grouper.run();
+
+        ComplexityUpdater complexityUpdater = new ComplexityUpdater(this);
         complexityUpdater.run();
     }
 
@@ -58,33 +57,14 @@ public class DependencyTree {
         return methods;
     }
 
-    public void addMethods(List<MethodInfo> methods) {
+    public void setMethods(List<MethodInfo> methods) {
+        this.methods.clear();
+        this.methodInfoMap.clear();
         this.methods.addAll(methods);
         this.methods.forEach(methodInfo -> {
             methodInfoMap.put(methodInfo.getPsiElement(), methodInfo);
             methodInfo.setOutdated(true);
         });
-
-        relationAdder.run();
-        this.groups = grouper.run();
-    }
-
-    public void setMethods(List<MethodInfo> methods) {
-        this.methods.clear();
-        this.methodInfoMap.clear();
-        addMethods(methods);
-    }
-
-    public void addMethod(MethodInfo methodInfo) {
-        this.methods.add(methodInfo);
-        this.methodInfoMap.put(methodInfo.getPsiElement(), methodInfo);
-    }
-
-    public void removeMethod(@NotNull MethodInfo methodInfo) {
-        this.methods.remove(methodInfo);
-        this.methodInfoMap.remove(methodInfo.getPsiElement());
-        relationAdder.run();
-        this.groups = grouper.run();
     }
 
     @Override
