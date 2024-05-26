@@ -25,7 +25,7 @@ public class GroupInfo {
 
     public String getMethodSignatures() {
         StringBuilder sb = new StringBuilder();
-        for(MethodInfo method : methods){
+        for (MethodInfo method : methods){
             sb.append(method.getMethodSignature()).append(", ");
         }
         return sb.toString();
