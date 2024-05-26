@@ -17,6 +17,7 @@ public class MethodInfo {
     private List<MethodInfo> dependsOn;
     private List<MethodInfo> providesFor;
     private boolean isUpdating;
+    private boolean isOutDated;
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
         this.dependsOn = new ArrayList<>();
@@ -94,5 +95,13 @@ public class MethodInfo {
 
     public boolean isUpdating(){
         return this.isUpdating;
+    }
+
+    public void setOutdated(boolean val){
+        this.isOutDated = val;
+    }
+
+    public boolean isOutDated(){
+        return this.isOutDated;
     }
 }
