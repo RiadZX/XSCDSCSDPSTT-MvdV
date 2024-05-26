@@ -60,6 +60,9 @@ public class Complexity {
             case "orange" -> {
                 return JBColor.ORANGE;
             }
+            case "white" -> {
+                return JBColor.WHITE;
+            }
             case "yellow" -> {
                 return JBColor.YELLOW;
             }

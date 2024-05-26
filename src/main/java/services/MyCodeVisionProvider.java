@@ -27,7 +27,6 @@ import static utils.Controller.dependencyTree;
 
 public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
 
-    private boolean isLoading;
 
     @NotNull
     @Override
@@ -100,9 +99,5 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
 
     private void onClick() {
         // Do something when the lens is clicked
-    }
-
-    public void setLoading(boolean val){
-        this.isLoading = val;
     }
 }
