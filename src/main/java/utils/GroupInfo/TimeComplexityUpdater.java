@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class TimeComplexityUpdater {
-    private final String systemPrompt =     """
+    private final String systemPromptPart1 =     """
             !reset all conditions
                     follow the following instructions as close as possible:
                     - respond in the following format only !important
@@ -18,11 +18,9 @@ class TimeComplexityUpdater {
                     - do not include any extra new lines
                     - Follow the complexity instructions as closely and consistently as possible
 
-            You will be given lines with method signatures. These methods may be library methods.
-            If you do not recognize the library method, respond with O(?) (In both long and short complexity), with color pink
-            Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
-            methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
+            """;
 
+    private final String systemPromptPart2 =  """ 
                     always use the following rules when printing time complexity:
                     - always write logs and sqrts with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]. Do this only for 1 letter variables !important
                     - For the first shorter version, always write it as short as possible (The most significant factor). So write O(n^2) instead of O(n^2 + log n)
@@ -39,13 +37,77 @@ class TimeComplexityUpdater {
                     - Below O(n^2): green [for example: O(n), O(n log n), O(n sqrt n), O(n log(n^2))]
                     - Below O(2^n): orange [for example: O(n^2), O(n^3), O(n^6)]
                     - Above O(2^n): red [for example: O(2^n), O(n!), O(n^n)]
+""";
+    private final String extraExplPrompt1 = """
+            You are a time complexity analysis tool.
+                                You must analyze the time complexity of the provided methods.
+                                Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
+                                methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
+            """;
 
+    private final String extraExplPrompt2 =
+                """
+            You will be given lines with method signatures. These methods may be library methods.
+            If you do not recognize the library method, respond with O(?) (In both long and short complexity), with color pink
+            Respond with the signature of the method, its time complexity, its time complexity with attributes filled in, and a color indication (blue/green/orange/red). Do not give any extra content. Specify this exactly in the following format and do not give any other content:
+            methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
+    """;
+
+    private final String examplePrompt1 = """
+                Example input:
+                public static void selectionSort(int[] arr) {
+                    int n = getArrLength(arr);
+                    for (int i = 0; i < n - 1; i++) {
+                        int minIndex = i;
+                        for (int j = i + 1; j < n; j++) {
+                            if (arr[j] < arr[minIndex]) {
+                                minIndex = j;
+                            }
+                        }
+                        // Swap the found minimum element with the first
+                        // element of the unsorted part
+                        int temp = arr[minIndex];
+                        arr[minIndex] = arr[i];
+                            arr[i] = temp;
+                        }
+                    }
+                public void traversePreOrderWithoutRecursion() {
+                    Stack<Node> stack = new Stack<Node>();
+                    Node current = root;
+                    stack.push(root);
+                    while(!stack.isEmpty()) {
+                    current = stack.pop();
+                    visit(current.value);
+                        
+                    if(current.right != null) {
+                        stack.push(current.right);
+                        }
+                        if(current.left != null) {
+                            stack.push(current.left);
+                            }
+                        }
+                    }
+                        
+                    Output:
+                    selectionSort(int[] arr): O(n^2), O(arr^2), orange
+                    traversePreOrderWithoutRecursion: O(1), O(1), green
+            """;
+    private final String examplePrompt2 =
+            """
             Example input:
             java.util.List<E> java.util.List.of(E e1, E e2, E e3);
 
             Example output:
             java.util.List<E> java.util.List.of(E e1, E e2, E e3): O(1), O(1), blue
 """;
+
+    private String prompt1() {
+        return systemPromptPart1 + extraExplPrompt1 + systemPromptPart2 + examplePrompt1;
+    }
+
+    private String prompt2() {
+        return systemPromptPart1 + extraExplPrompt2 + systemPromptPart2 + examplePrompt2;
+    }
 
 
     private final Chatgpt chatgpt;
@@ -59,7 +121,7 @@ class TimeComplexityUpdater {
     public void run() {
         for (int i = 0; i < 5; i++) {
             String prompt = makePrompt();
-            String response = chatgpt.getResponse(systemPrompt, prompt);
+            String response = chatgpt.getResponse(prompt1(), prompt);
             try {
                 parseResponse(response);
                 break;

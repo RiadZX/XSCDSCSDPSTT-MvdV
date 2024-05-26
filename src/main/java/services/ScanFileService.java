@@ -13,6 +13,7 @@ import static utils.Controller.dependencyTree;
 public final class ScanFileService {
 
     public void scanFile(PsiFile file) {
+        System.out.println("Scanning file: " + file.getName());
         if (!"JAVA".equals(file.getLanguage().getID())) {
             throw new RuntimeException("Only Java files are supported");
         }
@@ -23,6 +24,5 @@ public final class ScanFileService {
         dependencyTree.updateAll();
 
         Controller.timeActive = true;
-        PsiHelper.resetAnnotationsAndStuff();
     }
 }

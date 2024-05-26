@@ -29,14 +29,38 @@ public class DependencyTree {
     }
 
     public void updateAll() {
+        System.out.println("Updating full dependency tree complexities");
+
+        System.out.println("Updating relations");
         RelationAdder relationAdder = new RelationAdder(this);
         relationAdder.run();
 
+        showMethods();
+
+        System.out.println("Updating groups");
         ConnectedComponentsFinder grouper = new ConnectedComponentsFinder(methods);
         this.groups = grouper.run();
 
+        showGroups();
+
+        System.out.println("Updating complexities");
         ComplexityUpdater complexityUpdater = new ComplexityUpdater(this);
         complexityUpdater.run();
+    }
+
+    public void showMethods() {
+        System.out.println("All methods:");
+        for (MethodInfo methodInfo : methods) {
+            System.out.println("Method: "+methodInfo.getMethodSignature());
+            System.out.println(methodInfo.getPsiElement().getText());
+        }
+    }
+
+    public void showGroups() {
+        System.out.println("All groups:");
+        for (GroupInfo groupInfo : groups) {
+            System.out.println("Group: "+groupInfo.getMethodSignatures());
+        }
     }
 
     public List<GroupInfo> getGroups() {

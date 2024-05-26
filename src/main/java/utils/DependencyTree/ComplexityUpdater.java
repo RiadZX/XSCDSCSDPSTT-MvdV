@@ -3,6 +3,7 @@ package utils.DependencyTree;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.util.concurrency.AppExecutorUtil;
 import utils.GroupInfo.GroupInfo;
+import utils.PsiHelper;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -16,7 +17,7 @@ class ComplexityUpdater {
     public ComplexityUpdater(DependencyTree dependencyTree) {
         this.dependencyTree = dependencyTree;
         updated = new CopyOnWriteArraySet<>();
-        executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
+        executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 2);
     }
 
     public void run() {
@@ -31,13 +32,14 @@ class ComplexityUpdater {
 
     private void updateComplexities(GroupInfo groupInfo) {
         executor.submit(() -> {
-//            try {
+            try {
                 updated.add(groupInfo);
-                if (!groupInfo.isOutdated()) {
+                if (groupInfo.isOutdated()) {
                     ReadAction.run(() -> {
                         System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures() + ")");
-//                        Thread.sleep(2000);
+                        Thread.sleep(2000);
                         groupInfo.updateComplexities();
+                        PsiHelper.resetIdeAnnotations();
                     });
                 }
                 for (GroupInfo child : groupInfo.getProvidesFor()) {
@@ -45,9 +47,9 @@ class ComplexityUpdater {
                         updateComplexities(child);
                     }
                 }
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

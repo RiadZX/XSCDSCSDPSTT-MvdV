@@ -5,7 +5,6 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.codeInsight.codeVision.CodeVisionHost;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.IdeFrame;
@@ -13,14 +12,9 @@ import com.intellij.openapi.wm.WindowManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.compiled.ClsMemberImpl;
-import com.intellij.psi.impl.java.stubs.impl.PsiClassStubImpl;
-import com.intellij.psi.impl.java.stubs.impl.PsiMethodStubImpl;
-import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +42,7 @@ public class PsiHelper {
         return new Pair<>(res, compiled);
     }
 
-    public static void resetAnnotationsAndStuff() {
+    public static void resetIdeAnnotations() {
         Project project = PsiHelper.getCurrentProject();
         PsiManager.getInstance(project).dropPsiCaches();
         DaemonCodeAnalyzer.getInstance(project).restart();
