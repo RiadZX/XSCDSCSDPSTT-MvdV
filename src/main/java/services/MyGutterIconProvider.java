@@ -1,6 +1,5 @@
 package services;
 
-import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.icons.AllIcons;
@@ -12,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import utils.Complexity;
 import utils.Controller;
-import utils.MethodInfo;
 
 import javax.swing.*;
 import java.awt.*;

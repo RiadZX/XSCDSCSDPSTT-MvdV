@@ -3,10 +3,8 @@ package utils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import utils.chatgpt.Chatgpt;
 import utils.chatgpt.TimeComplexityUpdater;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -61,15 +59,25 @@ public class GroupInfo {
         return children;
     }
 
+    public List<GroupInfo> getAllSubGroups() {
+        List<GroupInfo> allSubGroups = new ArrayList<>();
+        for(GroupInfo child : children){
+            allSubGroups.add(child);
+            allSubGroups.addAll(child.getAllSubGroups());
+        }
+        return allSubGroups;
+    }
+
     public void setChildren(List<GroupInfo> children) {
         this.children = children;
     }
 
     public void updateComplexities() {
-        TimeComplexityUpdater.updateTimeComplexities(this);
+        TimeComplexityUpdater updater = new TimeComplexityUpdater(this);
+        updater.run();
     }
 
-    public MethodInfo getMethodBySignature(String signature) {
+    public MethodInfo findMethodBySignature(String signature) {
         for(MethodInfo method : methods){
             String text = method.getMethod().getText();
             if(text.contains(signature)){

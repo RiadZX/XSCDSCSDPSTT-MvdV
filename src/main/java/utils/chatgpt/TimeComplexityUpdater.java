@@ -1,10 +1,13 @@
 package utils.chatgpt;
 
 import com.google.gson.Gson;
+import com.intellij.openapi.components.ComponentManager;
+import com.intellij.openapi.components.ServiceManager;
 import utils.Complexity;
 import utils.GroupInfo;
 import utils.MethodInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,67 +81,84 @@ public class TimeComplexityUpdater {
             selectionSort(int[] arr): O(n^2), O(arr^2), orange
             traversePreOrderWithoutRecursion: O(1), O(1), green
     """;
-    private static final Chatgpt chatgpt  = new Chatgpt();;
 
-    public static void updateTimeComplexities(GroupInfo groupInfo) {
-        String prompt = makePrompt(groupInfo);
-        String response = chatgpt.getResponse(systemPrompt, prompt);
-        parseResponse(groupInfo, response);
+    private final Chatgpt chatgpt;
+    private final GroupInfo groupInfo;
+
+    public TimeComplexityUpdater(GroupInfo groupInfo) {
+        this.chatgpt = new Chatgpt();
+        this.groupInfo = groupInfo;
     }
 
-    private static String makePrompt(GroupInfo group) {
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            String prompt = makePrompt();
+            String response = chatgpt.getResponse(systemPrompt, prompt);
+            try {
+                parseResponse(response);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.err.println("Error updating time complexities: " + e.getMessage() + ". Retrying... "+i+"/5");
+            }
+        }
+    }
+
+    private String makePrompt() {
         StringBuilder prompt = new StringBuilder("Give the time complexity(ies) of the following method(s):\n");
         int counter = 0;
-        for(MethodInfo method : group.getMethods()){
+        for(MethodInfo method : groupInfo.getMethods()){
             prompt.append("Method ").append(counter++).append(": \n");
             prompt.append(method.getPsiElement().getText()).append("\n");
         }
 
-        Map<MethodInfo, Complexity> knownComplexities = associateComplexityToMethods(group);
+        List<MethodInfo> knownComplexities = getKnownMethods();
 
-        if(!knownComplexities.keySet().isEmpty()) {
+        if(!knownComplexities.isEmpty()) {
             prompt.append("The time complexities of the following methods are already known. Please use them: \n");
-            for (MethodInfo meth : knownComplexities.keySet()) {
-                prompt.append("Method: ").append(meth.getMethod().getText(), 0, meth.getMethod().getText().indexOf(')') + 1).append(" Complexity: ").append(knownComplexities.get(meth)).append("\n");
+            for (MethodInfo meth : knownComplexities) {
+                prompt
+                        .append("Method: ")
+                        .append(meth.getMethod().getText(), 0, meth.getMethod().getText().indexOf(')') + 1)
+                        .append(" Complexity: ")
+                        .append(meth.getTimeComplexity().getLongComplexity())
+                        .append("\n");
             }
         }
 
         return prompt.toString();
     }
 
-    private static Map<MethodInfo, Complexity> associateComplexityToMethods(GroupInfo group){
-        Map<MethodInfo, Complexity> res = new HashMap<>();
-//        List<GroupInfo> children = group.getChildren();
-//        for(GroupInfo child : children){
-//            List<MethodInfo> methodInfo = child.getMethods();
-//            for(MethodInfo method : methodInfo){
-//                MethodInfo name = method;
-//                Complexity compl = Complexity.fromString(method.getTimeComplexity().getLongComplexity());
-//                res.put(name, compl);
-//            }
-//        }
-        return res;
+    private List<MethodInfo> getKnownMethods(){
+        List<MethodInfo> methods = new ArrayList<>();
+        for(GroupInfo child : groupInfo.getAllSubGroups()) {
+            for(MethodInfo method : child.getMethods()){
+                if (method.getTimeComplexity().isKnown()) {
+                    methods.add(method);
+                }
+            }
+        }
+        return methods;
     }
 
-    private static void parseResponse(GroupInfo groupInfo, String response) {
+    private void parseResponse(String response) {
         try {
             ChatgptResponse chatgptResponse = new Gson().fromJson(response, ChatgptResponse.class);
             String content = chatgptResponse.choices.get(0).message.content;
             String[] items = content.split("\\n");
             for (String item : items) {
-                String[] parts = content.split(":");
+                String[] parts = item.split(":");
                 String methodSignature = parts[0];
                 String dataParts = parts[1];
                 String shortTimeComplexity = dataParts.split(",")[0];
                 String longTimeComplexity = dataParts.split(",")[1];
                 String colorTimeComplexity = dataParts.split(",")[2];
 
-                Complexity complexity = Complexity.fromString(shortTimeComplexity, longTimeComplexity, colorTimeComplexity);
-                MethodInfo methodInfo = groupInfo.getMethodBySignature(methodSignature);
+                Complexity complexity = new Complexity(shortTimeComplexity, longTimeComplexity, colorTimeComplexity);
+                MethodInfo methodInfo = groupInfo.findMethodBySignature(methodSignature);
                 methodInfo.setTimeComplexity(complexity);
             }
         } catch (Exception e) {
-            System.err.println("Error parsing response from ChatGPT: " + e.getMessage());
+            throw new IllegalArgumentException("Error parsing response from ChatGPT: " + e.getMessage());
         }
     }
 }

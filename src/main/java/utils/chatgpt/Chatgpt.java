@@ -1,6 +1,7 @@
 package utils.chatgpt;
 
 import com.google.gson.Gson;
+import com.intellij.openapi.components.Service;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import utils.GroupInfo;
@@ -13,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+@Service(Service.Level.PROJECT)
 public class Chatgpt {
 
     private static final String url =  "https://api.openai.com/v1/chat/completions";
