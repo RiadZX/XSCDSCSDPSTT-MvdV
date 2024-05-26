@@ -55,8 +55,10 @@ public class MyGutterIconProvider implements LineMarkerProvider {
             gutterText += " \u27F3";
             timeComplexity.setColor("pink");
         }
-        MyLineMarkerInfo ret = new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), timeComplexity.getLongComplexity());
 //add stuff
+        String hoverText = identifierElement.getText();
+        hoverText += ": " + timeComplexity.getLongComplexity();
+        MyLineMarkerInfo ret = new MyLineMarkerInfo(identifierElement, gutterText, timeComplexity.getColor(), timeComplexity.getLongComplexity());
         return ret;
     }
 

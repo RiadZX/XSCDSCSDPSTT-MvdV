@@ -38,9 +38,11 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
         return true;
     }
 
-    private static class ComplexityWindow {
+    public static class ComplexityWindow {
 
         private final ScanFileService service;
+        public static JLabel loadingLabel;
+        public static JPanel panel;
 
         ComplexityWindow(ToolWindow toolWindow) {
             this.service = toolWindow.getProject().getService(ScanFileService.class);
@@ -62,32 +64,38 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Show the loading label
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingLabel.setVisible(true);
-                            panel.revalidate();
-                            panel.repaint();
-                        }
-                    });
-
                     service.scanFile(PsiHelper.getCurrentFile());
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingLabel.setVisible(false);
-                            panel.revalidate();
-                            panel.repaint();
-                        }
-                    });
                 }
             });
-
             buttonPanel.add(button);
             panel.add(loadingLabel, BorderLayout.NORTH);
             panel.add(buttonPanel, BorderLayout.CENTER);
+            this.loadingLabel = loadingLabel;
+            this.panel=panel;
             return panel;
+        }
+
+        public static void displayLoad(){
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    loadingLabel.setVisible(true);
+                    panel.revalidate();
+                    panel.repaint();
+                }
+            });
+
+        }
+
+        public static void undisplayLoad(){
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    loadingLabel.setVisible(false);
+                    panel.revalidate();
+                    panel.repaint();
+                }
+            });
         }
     }
 }
