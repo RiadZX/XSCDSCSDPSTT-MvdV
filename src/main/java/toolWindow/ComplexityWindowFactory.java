@@ -72,17 +72,8 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                         }
                     });
 
-                    // Perform the file scan in a background thread
-                    new SwingWorker<Void, Void>() {
-                        @Override
-                        protected Void doInBackground() throws Exception {
                             service.scanFile(PsiHelper.getCurrentFile());
-                            return null;
-                        }
 
-                        @Override
-                        protected void done() {
-                            // Hide the loading label after the task is done
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -92,8 +83,6 @@ public class ComplexityWindowFactory implements ToolWindowFactory {
                                 }
                             });
                         }
-                    }.execute();
-                }
             });
 
             buttonPanel.add(button);

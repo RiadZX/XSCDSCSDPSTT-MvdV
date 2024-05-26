@@ -16,7 +16,7 @@ public class MethodInfo {
 
     private List<MethodInfo> dependsOn;
     private List<MethodInfo> providesFor;
-
+    private boolean isUpdating;
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
         this.dependsOn = new ArrayList<>();
@@ -86,5 +86,13 @@ public class MethodInfo {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public void setUpdating(boolean val){
+        this.isUpdating = val;
+    }
+
+    public boolean isUpdating(){
+        return this.isUpdating;
     }
 }
