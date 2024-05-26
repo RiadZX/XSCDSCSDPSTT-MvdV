@@ -63,7 +63,7 @@ public class DependencyTree {
                 return methodInfo;
             }
         }
-        throw new RuntimeException("Method not found");
+        return null;
     }
 
     public void updateComplexities() {
@@ -107,7 +107,5 @@ public class DependencyTree {
                 Thread.currentThread().interrupt();
             }
         }
-
-        DaemonCodeAnalyzer.getInstance(PsiHelper.getCurrentProject()).restart();
     }
 }

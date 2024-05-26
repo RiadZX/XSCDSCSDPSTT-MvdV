@@ -22,5 +22,7 @@ public final class ScanFileService {
                 .build();
 
         dependencyTree.updateComplexities();
+        Controller.timeActive = true;
+        PsiHelper.resetAnnotationsAndStuff();
     }
 }

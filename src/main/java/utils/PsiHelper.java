@@ -1,5 +1,6 @@
 package utils;
 
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -38,6 +39,10 @@ public class PsiHelper {
         List<PsiElement> res = new ArrayList<>();
         findMethodReferences(element, res);
         return res;
+    }
+
+    public static void resetAnnotationsAndStuff() {
+        DaemonCodeAnalyzer.getInstance(PsiHelper.getCurrentProject()).restart();
     }
 
     private static void findMethodReferences(PsiElement el, List<PsiElement> methods) {

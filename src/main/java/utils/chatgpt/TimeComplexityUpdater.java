@@ -24,19 +24,21 @@ public class TimeComplexityUpdater {
             methodSignature(int[] arr): O(n^2), O(arr.size()^2), orange
             
             always use the following rules when printing time complexity:
-            - always write logs with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]
+            - always write logs and sqrts with brackets [O(log(var))] unless the content is 1 character, then always write is with a space [O(log n)]. Do this only for 1 letter variables !important
             - For the first shorter version, always write it as short as possible (The most significant factor). So write O(n^2) instead of O(n^2 + log n)
             - write a square root as sqrt(var), but write any other power below 1 as the regular power [O(x^0.25)]
             - Round any numbers used to at most 2 decimals [O(n^2.25)]
             - Multiplication signs may be dropped, so O(n log n) instead of O(n * log n)
             - Keep in mind that not only for loops, but also stuff like array creation takes a time, so new int[n] is also O(n).
             - Also keep library methods in mind
+            - Be consistent with colors!
+            - For the simpler/shorter time complexity, try to write all variables as 1 letter vars. Preferably a logical letter (index => i)
             
             The color indication is as follows:
-            - Below O(n): blue
-            - Below O(n^2): green
-            - Below O(2^n): orange
-            - Above O(2^n): red
+            - Below O(n): blue [for example: O(1), O(log n), O(sqrt n), O((log n)^2)
+            - Below O(n^2): green [for example: O(n), O(n log n), O(n sqrt n), O(n log(n^2))]
+            - Below O(2^n): orange [for example: O(n^2), O(n^3), O(n^6)]
+            - Above O(2^n): red [for example: O(2^n), O(n!), O(n^n)]
             
             Example input:
             public static void selectionSort(int[] arr) {
@@ -85,23 +87,23 @@ public class TimeComplexityUpdater {
     }
 
     private static String makePrompt(GroupInfo group) {
-        String prompt = "Give the time complexity(ies) of the following method(s):\n";
+        StringBuilder prompt = new StringBuilder("Give the time complexity(ies) of the following method(s):\n");
         int counter = 0;
         for(MethodInfo method : group.getMethods()){
-            prompt += "Method " + counter++ + ": \n";
-            prompt += method.getPsiElement().getText() + "\n";
+            prompt.append("Method ").append(counter++).append(": \n");
+            prompt.append(method.getPsiElement().getText()).append("\n");
         }
 
         Map<MethodInfo, Complexity> knownComplexities = associateComplexityToMethods(group);
 
         if(!knownComplexities.keySet().isEmpty()) {
-            prompt += "The time complexities of the following methods are already known. Please use them: \n";
+            prompt.append("The time complexities of the following methods are already known. Please use them: \n");
             for (MethodInfo meth : knownComplexities.keySet()) {
-                prompt += "Method: " + meth.getMethod().getText().substring(0,meth.getMethod().getText().indexOf(')')+1) + " Complexity: " + knownComplexities.get(meth) + "\n";
+                prompt.append("Method: ").append(meth.getMethod().getText(), 0, meth.getMethod().getText().indexOf(')') + 1).append(" Complexity: ").append(knownComplexities.get(meth)).append("\n");
             }
         }
 
-        return prompt;
+        return prompt.toString();
     }
 
     private static Map<MethodInfo, Complexity> associateComplexityToMethods(GroupInfo group){

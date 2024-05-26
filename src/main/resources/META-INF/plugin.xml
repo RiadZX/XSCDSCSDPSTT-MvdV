@@ -13,6 +13,8 @@
         <codeInsight.lineMarkerProvider
                 language="JAVA"
                 implementationClass="services.MyGutterIconProvider"/>
+        <codeInsight.daemonBoundCodeVisionProvider
+                implementation="services.MyCodeVisionProvider"/>
     </extensions>
 
     <applicationListeners>

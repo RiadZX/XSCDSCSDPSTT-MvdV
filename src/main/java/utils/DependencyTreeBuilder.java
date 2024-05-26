@@ -28,8 +28,10 @@ public class DependencyTreeBuilder {
             PsiElement psiElement = methodInfo.getPsiElement();
             PsiHelper.findMethodReferences(psiElement).forEach(child -> {
                 MethodInfo childInfo = dependencyTree.getMethodInfo(child);
-                methodInfo.addChild(childInfo);
-                childInfo.addParent(methodInfo);
+                if (Controller.methodInfoMap.containsKey(childInfo)) {
+                    methodInfo.addChild(childInfo);
+                    childInfo.addParent(methodInfo);
+                }
             });
         }
     }

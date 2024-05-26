@@ -11,6 +11,7 @@ import com.intellij.util.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import utils.Complexity;
+import utils.Controller;
 import utils.MethodInfo;
 
 import javax.swing.*;
@@ -21,28 +22,34 @@ public class MyGutterIconProvider implements LineMarkerProvider {
     @Nullable
     @Override
     public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement el) {
+        if (!Controller.timeActive || !Controller.inlineTime) return null;
 
-        PsiElement refEl = getReferenceElement(el);
+        PsiElement refEl = null;
+        if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
+            if (el.getReference() != null) {
+                refEl = el.getReference().resolve();
+            }
+        }
         if (refEl!=null){
             //handling a reference element
-            if (MethodInfo.methodInfoMap.get(refEl) == null) return null;
-            Complexity timeComplexity = MethodInfo.methodInfoMap.get(refEl).getTimeComplexity();
-            if (timeComplexity == null) return null;
-            PsiElement identifierElement = getIdentifierElement(el);
-            if (identifierElement == null) return null;
-            return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+            return addMarker(el, refEl);
         } else {
             //handling something else
             if (isValidElement(el)) {
-                if (MethodInfo.methodInfoMap.get(el) == null) return null;
-                Complexity timeComplexity = MethodInfo.methodInfoMap.get(el).getTimeComplexity();
-                if (timeComplexity == null) return null;
-                PsiElement identifierElement = getIdentifierElement(el);
-                if (identifierElement == null) return null;
-                return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
+                return addMarker(el, el);
             }
         }
         return null;
+    }
+
+    @Nullable
+    private LineMarkerInfo<?> addMarker(@NotNull PsiElement el, PsiElement refEl) {
+        if (Controller.methodInfoMap.get(refEl) == null) return null;
+        Complexity timeComplexity = Controller.methodInfoMap.get(refEl).getTimeComplexity();
+        if (timeComplexity == null) return null;
+        PsiElement identifierElement = getIdentifierElement(el);
+        if (identifierElement == null) return null;
+        return new MyLineMarkerInfo(identifierElement, timeComplexity.getShortComplexity(), timeComplexity.getColor(), timeComplexity.getLongComplexity());
     }
 
     private PsiElement getIdentifierElement(PsiElement el) {
@@ -53,20 +60,6 @@ public class MyGutterIconProvider implements LineMarkerProvider {
            }
        }
         return null;
-    }
-
-    private PsiElement getReferenceElement(PsiElement el) {
-        if ("REFERENCE_EXPRESSION".equals(el.getNode().getElementType().toString())) {
-            if (el.getReference() != null) {
-                return el.getReference().resolve();
-            }
-        }
-        return null;
-    }
-
-    private String getComplexity(PsiElement el) {
-//        return el.getText();
-    return "O(n\u00B2)";
     }
 
     private boolean isValidElement(PsiElement el) {
