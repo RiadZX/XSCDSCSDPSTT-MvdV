@@ -43,6 +43,7 @@ public class PsiHelper {
     }
 
     public static void resetIdeAnnotations() {
+        System.out.println("Updating UI");
         Project project = PsiHelper.getCurrentProject();
         PsiManager.getInstance(project).dropPsiCaches();
         DaemonCodeAnalyzer.getInstance(project).restart();

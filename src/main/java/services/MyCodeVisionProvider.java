@@ -70,6 +70,7 @@ public class MyCodeVisionProvider implements DaemonBoundCodeVisionProvider {
             if (
                     dependencyTree.findMethodInfo(el) != null &&
                     dependencyTree.findMethodInfo(el).getTimeComplexity() != null &&
+                            dependencyTree.findMethodInfo(el).getTimeComplexity().isKnown() &&
                 !dependencyTree.findMethodInfo(el).getTimeComplexity().getLongComplexity().isEmpty())
             {
                 String hint;
