@@ -23,10 +23,6 @@ public class MethodCodeBlockChangeListener extends PsiTreeChangeAdapter {
         if ("METHOD".equals(element.getNode().getElementType().toString())) {
             System.out.println("Removed method" + element);
             MethodInfo methodInfo = Controller.dependencyTree.findMethodInfo(element);
-            if (methodInfo == null) {
-                System.err.println("Method not found in dependency tree");
-                return;
-            }
             Controller.dependencyTree.removeMethod(methodInfo);
         }
     }

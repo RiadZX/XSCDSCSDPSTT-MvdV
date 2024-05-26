@@ -48,6 +48,10 @@ public class GroupInfo {
         this.methods = methods;
     }
 
+    public void addMethod(MethodInfo method) {
+        this.methods.add(method);
+    }
+
     public List<GroupInfo> getDependsOn() {
         return dependsOn;
     }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -59,15 +60,24 @@ public class DependencyTree {
 
     public void addMethods(List<MethodInfo> methods) {
         this.methods.addAll(methods);
-        this.methods.forEach(methodInfo -> methodInfoMap.put(methodInfo.getPsiElement(), methodInfo));
+        this.methods.forEach(methodInfo -> {
+            methodInfoMap.put(methodInfo.getPsiElement(), methodInfo);
+            methodInfo.setOutdated(true);
+        });
+
+        relationAdder.run();
+        this.groups = grouper.run();
+    }
+
+    public void setMethods(List<MethodInfo> methods) {
+        this.methods.clear();
+        this.methodInfoMap.clear();
+        addMethods(methods);
     }
 
     public void addMethod(MethodInfo methodInfo) {
         this.methods.add(methodInfo);
         this.methodInfoMap.put(methodInfo.getPsiElement(), methodInfo);
-        relationAdder.run();
-        this.groups = grouper.run();
-        methodInfo.setOutdated(true);
     }
 
     public void removeMethod(@NotNull MethodInfo methodInfo) {

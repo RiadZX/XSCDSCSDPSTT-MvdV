@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import utils.*;
-import utils.chatgpt.LibraryComplexityFigureOuter;
+import utils.GroupInfo.GroupInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class RelationAdder {
             });
 
             // Library functions
-            List<LibraryMethodInfo> libraryMethods = new ArrayList<>();
+            List<MethodInfo> libraryMethods = new ArrayList<>();
             List<String> methods = new ArrayList<>();
             references.second.forEach(child -> {
                 if (child instanceof PsiMethod meth) {
@@ -46,11 +46,11 @@ public class RelationAdder {
                         res.append(parameter.getType().getCanonicalText()).append(" ").append(parameter.getName()).append(", ");
                     }
                     res = new StringBuilder(res.substring(0, res.length() - 2) + ")");
-                    LibraryMethodInfo methInfo;
+                    MethodInfo methInfo;
                     if (Controller.signartureToMethodInfoMap.containsKey(res.toString())) {
                         methInfo = Controller.signartureToMethodInfoMap.get(res.toString());
                     } else {
-                        methInfo = new LibraryMethodInfo();
+                        methInfo = new MethodInfo(null);
                         methods.add(res.toString());
                         libraryMethods.add(methInfo);
                         Controller.signartureToMethodInfoMap.put(res.toString(), methInfo);
@@ -59,9 +59,11 @@ public class RelationAdder {
                 }
             });
 
-            List<Complexity> res = LibraryComplexityFigureOuter.run(methods);
-            for (int i = 0; i < res.size(); i++) {
-                libraryMethods.get(i).setTimeComplexity(res.get(i));
+
+            for (MethodInfo libraryMethod : libraryMethods) {
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.addMethod(libraryMethod);
+                groupInfo.updateComplexities();
             }
         }
     }
