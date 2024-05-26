@@ -21,13 +21,19 @@ public class MethodInfo {
 
     private List<MethodInfo> dependsOn;
     private List<MethodInfo> providesFor;
+    private final boolean isLibraryMethod;
+
+    public boolean isLibraryMethod() {
+        return isLibraryMethod;
+    }
 
     private GroupInfo group;
 
     private boolean isUpdating;
     private boolean isOutdated;
 
-    public MethodInfo(PsiElement psiElement) {
+    public MethodInfo(PsiElement psiElement, boolean isLibraryMethod) {
+        this.isLibraryMethod = isLibraryMethod;
         this.psiElement = (PsiMethod) psiElement;
         this.dependsOn = new ArrayList<>();
         this.providesFor = new ArrayList<>();

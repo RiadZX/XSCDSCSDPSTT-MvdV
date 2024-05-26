@@ -119,9 +119,13 @@ class TimeComplexityUpdater {
     }
 
     public void run() {
+        if (this.groupInfo.getMethods().isEmpty()) {
+            return;
+        }
+        boolean libraryMethods = this.groupInfo.getMethods().get(0).isLibraryMethod();
         for (int i = 0; i < 5; i++) {
-            String prompt = makePrompt();
-            String response = chatgpt.getResponse(prompt1(), prompt);
+            String prompt = makePrompt(libraryMethods);
+            String response = chatgpt.getResponse(libraryMethods ? prompt2() : prompt1(), prompt);
             try {
                 parseResponse(response);
                 break;
@@ -131,14 +135,21 @@ class TimeComplexityUpdater {
         }
     }
 
-    private String makePrompt() {
+    private String makePrompt(boolean libraryMethods) {
         StringBuilder prompt = new StringBuilder("Give the time complexity(ies) of the following method(s):\n");
         int counter = 0;
 
         for(MethodInfo method : groupInfo.getMethods()){
             prompt.append("Method ").append(counter++).append(": \n");
-            if (method.getPsiElement() == null) return "" ;
-            prompt.append(method.getPsiElement().getText()).append("\n");
+            if (libraryMethods) {
+                prompt.append(method.getMethodSignature());
+            } else {
+                prompt.append("The method with the signature:")
+                        .append(method.getMethodSignature())
+                        .append("\n Has the following code: \n")
+                        .append(method.getPsiElement().getText())
+                        .append("\n");
+            }
         }
 
         List<MethodInfo> knownComplexities = getKnownMethods();
