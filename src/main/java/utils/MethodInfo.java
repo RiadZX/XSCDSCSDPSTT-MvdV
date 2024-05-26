@@ -14,14 +14,18 @@ public class MethodInfo {
     private Complexity timeComplexity;
     private Complexity spaceComplexity;
 
-    private List<MethodInfo> parents;
-    private List<MethodInfo> children;
+    private List<MethodInfo> dependsOn;
+    private List<MethodInfo> providesFor;
 
     public MethodInfo(PsiElement psiElement) {
         this.psiElement = psiElement;
-        this.parents = new ArrayList<>();
-        this.children = new ArrayList<>();
+        this.dependsOn = new ArrayList<>();
+        this.providesFor = new ArrayList<>();
         Controller.methodInfoMap.put(psiElement, this);
+    }
+
+    public String getMethodSignature() {
+        return psiElement.getText().substring(0, psiElement.getText().indexOf(')') + 1);
     }
 
     public Complexity getTimeComplexity() {
@@ -44,33 +48,30 @@ public class MethodInfo {
         return psiElement;
     }
 
-    public List<MethodInfo> getChildren() {
-        return children;
+    public List<MethodInfo> getProvidesFor() {
+        return providesFor;
     }
 
-    public void setChildren(List<MethodInfo> children) {
-        this.children = children;
+    public void setProvidesFor(List<MethodInfo> providesFor) {
+        this.providesFor = providesFor;
     }
 
-    public void addChild(MethodInfo child) {
-        children.add(child);
+    public void addProvidesFor(MethodInfo parent) {
+        providesFor.add(parent);
     }
 
-    public List<MethodInfo> getParents() {
-        return parents;
+    public void addDependsOn(MethodInfo child) {
+        dependsOn.add(child);
     }
 
-    public void setParents(List<MethodInfo> parents) {
-        this.parents = parents;
+    public List<MethodInfo> getDependsOn() {
+        return dependsOn;
     }
 
-    public void addParent(MethodInfo parent) {
-        parents.add(parent);
+    public void setDependsOn(List<MethodInfo> dependsOn) {
+        this.dependsOn = dependsOn;
     }
 
-    public PsiElement getMethod() {
-        return psiElement;
-    }
 
     @Override
     public boolean equals(Object obj) {

@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import utils.GroupInfo;
+import utils.GroupInfo.GroupInfo;
 import utils.MethodInfo;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -40,7 +40,7 @@ public class DependencyTree {
     public List<GroupInfo> getTopLevelGroups() {
         List<GroupInfo> topLevelGroups = new ArrayList<>();
         for (GroupInfo groupInfo : groups) {
-            if (groupInfo.getParents().isEmpty()) {
+            if (groupInfo.getDependsOn().isEmpty()) {
                 topLevelGroups.add(groupInfo);
             }
         }

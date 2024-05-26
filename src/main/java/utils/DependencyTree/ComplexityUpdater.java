@@ -2,17 +2,21 @@ package utils.DependencyTree;
 
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.util.concurrency.AppExecutorUtil;
-import utils.GroupInfo;
+import utils.GroupInfo.GroupInfo;
 
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 class ComplexityUpdater {
     private final DependencyTree dependencyTree;
+    private final Set<GroupInfo> updated;
+    private final ExecutorService executor;
 
     public ComplexityUpdater(DependencyTree dependencyTree) {
         this.dependencyTree = dependencyTree;
+        updated = new CopyOnWriteArraySet<>();
+        executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
     }
 
     public void run() {
@@ -20,17 +24,28 @@ class ComplexityUpdater {
     }
 
     private void updateComplexities() {
-        try (
-                ExecutorService executor = AppExecutorUtil.createBoundedApplicationPoolExecutor("GroupUpdaterPool", 10);
-                ) {
-            for (GroupInfo groupInfo : dependencyTree.getGroups()) {
-                executor.submit(() -> {
-                        ReadAction.run(() -> {
-                            System.out.println("Updating complexities for group: " + groupInfo.hashCode());
-                            groupInfo.updateComplexities();
-                        });
-                });
-            }
+        for (GroupInfo groupInfo : dependencyTree.getTopLevelGroups()) {
+            updateComplexities(groupInfo);
         }
+    }
+
+    private void updateComplexities(GroupInfo groupInfo) {
+        executor.submit(() -> {
+            try {
+                updated.add(groupInfo);
+                ReadAction.run(() -> {
+                    System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures()+")");
+                    Thread.sleep(2000);
+                    groupInfo.updateComplexities();
+                });
+                for (GroupInfo child : groupInfo.getProvidesFor()) {
+                    if (!updated.contains(child)) {
+                        updateComplexities(child);
+                    }
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

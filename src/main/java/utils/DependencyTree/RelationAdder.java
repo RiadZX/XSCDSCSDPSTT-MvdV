@@ -28,8 +28,8 @@ public class RelationAdder {
             references.first.forEach(child -> {
                 MethodInfo childInfo = dependencyTree.getMethodInfoByPsiElement(child);
                 if (Controller.methodInfoMap.containsKey(child)) {
-                    methodInfo.addChild(childInfo);
-                    childInfo.addParent(methodInfo);
+                    methodInfo.addDependsOn(childInfo);
+                    childInfo.addProvidesFor(methodInfo);
                 }
             });
 

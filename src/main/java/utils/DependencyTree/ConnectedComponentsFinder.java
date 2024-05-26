@@ -1,6 +1,6 @@
 package utils.DependencyTree;
 
-import utils.GroupInfo;
+import utils.GroupInfo.GroupInfo;
 import utils.MethodInfo;
 
 import java.util.*;
@@ -45,7 +45,7 @@ class ConnectedComponentsFinder {
 
     private void dfs1(MethodInfo node) {
         visited.add(node);
-        for (MethodInfo child : node.getChildren()) {
+        for (MethodInfo child : node.getProvidesFor()) {
             if (!visited.contains(child)) {
                 dfs1(child);
             }
@@ -56,7 +56,7 @@ class ConnectedComponentsFinder {
     private Map<MethodInfo, List<MethodInfo>> reverseGraph(List<MethodInfo> graph) {
         Map<MethodInfo, List<MethodInfo>> reversedGraph = new HashMap<>();
         for (MethodInfo node : graph) {
-            for (MethodInfo child : node.getChildren()) {
+            for (MethodInfo child : node.getProvidesFor()) {
                 reversedGraph.computeIfAbsent(child, k -> new ArrayList<>()).add(node);
             }
         }

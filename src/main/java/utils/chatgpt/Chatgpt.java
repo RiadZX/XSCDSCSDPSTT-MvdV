@@ -1,10 +1,8 @@
 package utils.chatgpt;
 
-import com.google.gson.Gson;
 import com.intellij.openapi.components.Service;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import utils.GroupInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
