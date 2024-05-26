@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 @Service(Service.Level.PROJECT)
-public class Chatgpt {
+public final class Chatgpt {
 
     private static final String url =  "https://api.openai.com/v1/chat/completions";
     private static final String apiKey = "sk-proj-PNaJCdlWEdGZjDMdYHAGT3BlbkFJmS3oZtrGmvdQT6YHJiUA";
