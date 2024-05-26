@@ -37,7 +37,6 @@ class ComplexityUpdater {
                 if (groupInfo.isOutdated()) {
                     ReadAction.run(() -> {
                         System.out.println("Updating complexities for group: (" + groupInfo.getMethodSignatures() + ")");
-//                        Thread.sleep(2000);
                         groupInfo.updateComplexities();
                         PsiHelper.resetIdeAnnotations();
                     });
