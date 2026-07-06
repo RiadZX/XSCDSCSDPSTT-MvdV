@@ -60,7 +60,7 @@ public class MethodInfo {
     public String getMethodSignature() {
         PsiMethod meth = this.psiElement;
         String className = meth.getContainingClass() != null ? meth.getContainingClass().getQualifiedName() + "." : "";
-        StringBuilder res = new StringBuilder(meth.getReturnType().getCanonicalText() + " " + className + meth.getName() + "(");
+        StringBuilder res = new StringBuilder(meth.getReturnType() == null ? "void" : meth.getReturnType().getCanonicalText() + " " + className + meth.getName() + "(");
         for (PsiParameter parameter : meth.getParameterList().getParameters()) {
             res.append(parameter.getType().getCanonicalText()).append(" ").append(parameter.getName()).append(", ");
         }

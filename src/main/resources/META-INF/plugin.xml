@@ -10,7 +10,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="toolWindow.ComplexityWindowFactory" id="MyToolWindow" icon="TasksIcons.Exception"/>
+        <toolWindow factoryClass="toolWindow.ComplexityWindowFactory" id="AI Complexity analyzer" icon="TasksIcons.Exception"/>
         <codeInsight.lineMarkerProvider
                 language="JAVA"
                 implementationClass="services.MyGutterIconProvider"/>

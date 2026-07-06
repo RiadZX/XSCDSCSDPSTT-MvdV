@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 import utils.GroupInfo.GroupInfo;
 import utils.MethodInfo;
+import utils.PsiHelper;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
@@ -46,6 +47,11 @@ public class DependencyTree {
         System.out.println("Updating complexities");
         ComplexityUpdater complexityUpdater = new ComplexityUpdater(this);
         complexityUpdater.run();
+    }
+
+    public void setOutdated(boolean outdated) {
+        methods.forEach(methodInfo -> methodInfo.setOutdated(outdated));
+        PsiHelper.resetIdeAnnotations();
     }
 
     public void showMethods() {
