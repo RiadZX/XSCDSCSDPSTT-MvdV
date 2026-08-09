@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
 //    implementation(libs.annotations)
-    implementation("com.google.code.gson:gson:2.7")
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
